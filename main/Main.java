@@ -12,7 +12,8 @@ public class Main {
 
     public static void main(String[] args) {
 
-        System.out.println("Firstly, there should be bicycle, personal car, bus and taxi info.");
+        System.out.println("Firstly, let's check if the files for bicycle, personal car, bus and taxi exist.\n" +
+                "If they don't exist, we will write ourselves.\n");
         BicycleService bicycleService = new BicycleService();
         Bicycle[] bicycles = bicycleService.writeOrReadInfoInBicycleObject();
         PersonalCarService personalCarService = new PersonalCarService();
@@ -21,6 +22,23 @@ public class Main {
         Bus[] bus = busService.writeOrReadInfoInBusObject();
         TaxiService taxiService = new TaxiService();
         Taxi[] taxi = taxiService.writeOrReadInfoInTaxiObject();
+
+        if(bicycles.length == 0 || personalCars.length == 0 || bus.length == 0 ||
+                taxi.length == 0){
+            System.out.println("Something is missing in the bicycle, personal car, bus or taxi info.\nPlease provide all " +
+                    "the info and run the program again.");
+            System.exit(0);
+        }
+
+        System.out.println("\nLet's firstly check what the taxi horn sounds like.");
+        //Polymorphism
+        PublicCar pObj = new Taxi();
+        //pObj.horn();
+        pObj = new Bus();
+        //pObj.horn();
+
+        function(pObj);
+        function(new Taxi());
 
         while(true) {
 
@@ -65,28 +83,20 @@ public class Main {
                 }
             }
         }
-
-        //Polymorphism
-        PublicCar pObj = new Taxi();
-        pObj.horn();
-        pObj = new Bus();
-        pObj.horn();
-
-        function(pObj);
-        function(new Taxi());
-
     }
 
     private static void function(PublicCar p){
         if(p instanceof Taxi){
             Taxi tObj = (Taxi) p;
-            tObj.getDriverName();
+
+            tObj.horn();
         }
     }
 
     private static int mainMenuOptions(){
         //menu
         Scanner ss = new Scanner(System.in);
+        System.out.println();
         System.out.println("----Menu1----");
         System.out.println("Choose the Vehicle.");
         System.out.println("1. Type 1 for the Bicycle.");
@@ -114,6 +124,7 @@ public class Main {
         boolean loop1 = true;
         BicycleService bicycleService = new BicycleService();
 
+        System.out.println();
         System.out.println("----Bicycle Menu----");
         System.out.println("Choose one of the options below: ");
         System.out.println("1. Type 1 for printing all the bicycles information.");
@@ -129,11 +140,12 @@ public class Main {
 
         switch (command2) {
             case 1:
-                System.out.println(bicycles[0].getBrand());
                 System.out.println("You have chosen 1: all the bicycles info.");
                 for (int i = 0; i < bicycles.length; i++) {
-                    bicycleService.printInfoOfOneBicycle(bicycles[i]);
-                    System.out.println("-----------------------");
+                    if(bicycles[i] != null) {
+                        bicycleService.printInfoOfOneBicycle(bicycles[i]);
+                        System.out.println("-----------------------");
+                    }
                 }
                 System.out.println();
                 break;
@@ -156,7 +168,7 @@ public class Main {
                 System.out.println("You have chosen 5: the bicycles are ordered by price.");
                 bicycleService.orderByPrice(bicycles);
                 System.out.println();
-                if (bicycles.length != 0) {
+                if (bicycles[0] != null) {
                     bicycles[0].horn();
                 }
                 System.out.println();
@@ -174,6 +186,7 @@ public class Main {
         boolean loop1 = true;
         int[] arr = new int[2];
 
+        System.out.println();
         System.out.println("----Menu2----");
         System.out.println("Choose the Car.");
         System.out.println("1. Type 1 for the Personal Car.");
@@ -204,6 +217,7 @@ public class Main {
         boolean loop2 = true;
         PersonalCarService personalCarService = new PersonalCarService();
 
+        System.out.println();
         System.out.println("----Personal Car Menu----");
         System.out.println("Choose one of the options below: ");
         System.out.println("1. Type 1 for printing all the personal car information.");
@@ -232,7 +246,7 @@ public class Main {
                 System.out.println("You have chosen 2: the personal cars are ordered by price.");
                 personalCarService.orderByPrice(personalCars);
                 System.out.println();
-                if (personalCars.length != 0) {
+                if (personalCars[0] != null) {
                     personalCars[0].horn();
                 }
                 System.out.println();
@@ -259,6 +273,7 @@ public class Main {
         boolean loop2 = true;
         int[] array = new int[2];
 
+        System.out.println();
         System.out.println("----Public Car Menu----");
         System.out.println("Choose one of the options below: ");
         System.out.println("1. Type 1 for Bus.");
@@ -293,6 +308,7 @@ public class Main {
         boolean loop3 = true;
         BusService busService = new BusService();
 
+        System.out.println();
         System.out.println("----BUS Menu----");
         System.out.println("Choose one of the options below: ");
         System.out.println("1. Type 1 for printing all the bus information.");
@@ -308,8 +324,10 @@ public class Main {
             case 1:
                 System.out.println("You have chosen 1: all the bus info.");
                 for (int i = 0; i < bus.length; i++) {
-                    busService.printInfoOfOneBus(bus[i]);
-                    System.out.println("-----------------------");
+                    if(bus[i] != null) {
+                        busService.printInfoOfOneBus(bus[i]);
+                        System.out.println("-----------------------");
+                    }
                 }
                 System.out.println();
                 break;
@@ -317,7 +335,7 @@ public class Main {
                 System.out.println("You have chosen 2: all the working buses with route Komitas.");
                 busService.printWorkingBusesWithRouteKomitas(bus);
                 System.out.println();
-                if (bus.length != 0) {
+                if (bus[0] != null) {
                     bus[0].horn();
                 }
                 System.out.println();
@@ -340,10 +358,11 @@ public class Main {
         boolean loop3 = true;
         TaxiService taxiService = new TaxiService();
 
+        System.out.println();
         System.out.println("----TAXI Menu----");
         System.out.println("Choose one of the options below: ");
         System.out.println("1. Type 1 for printing all the taxi information.");
-        System.out.println("2. Type 2 to order the personal cars by price and to know the personal car horn type.");
+        System.out.println("2. Type 2 to find a taxi and to know the taxi horn type.");
         System.out.println("3. Type any other number to redirect to Menu 2.");
         System.out.println("-----------------------");
 
@@ -354,16 +373,22 @@ public class Main {
             case 1:
                 System.out.println("You have chosen 1: all the bus info.");
                 for (int i = 0; i < taxi.length; i++) {
-                    taxiService.printInfoOfOneTaxi(taxi[i]);
-                    System.out.println("-----------------------");
+                    if(taxi[i] != null) {
+                        taxiService.printInfoOfOneTaxi(taxi[i]);
+                        System.out.println("-----------------------");
+                    }
                 }
                 System.out.println();
                 break;
             case 2:
-                System.out.println("You have chosen 2: the personal cars are ordered by price.");
-            //    taxiService.orderByPrice(taxi);
+                System.out.println("You have chosen 2: we will find a taxi for you.");
+                if (taxiService.findTaxi(taxi, "Komitas 1", "Tashir poxoc", 100)) {
+                    System.out.println("We found a taxi for you.");
+                } else {
+                    System.out.println("Sorry, no taxi's available.");
+                }
                 System.out.println();
-                if (taxi.length != 0) {
+                if (taxi[0] != null) {
                     taxi[0].horn();
                 }
                 System.out.println();
@@ -377,4 +402,3 @@ public class Main {
         return loop3;
     }
 }
-

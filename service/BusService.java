@@ -19,19 +19,13 @@ public class BusService {
         String brand = "", model = "", color = "", made = "", plateNumber = "", route = "";
         boolean isWorking = false;
 
-        while (true) {
-            System.out.println("Enter wheelNumber - the number can be 2 or 3");
-            wheelNumber = scanner.nextInt();
-            if (wheelNumber == 2 || wheelNumber == 3) {
-                break;
-            }
-        }
+        System.out.println("Enter wheelNumber:");
+        wheelNumber = scanner.nextInt();
         String str = wheelNumber + ",";
 
         String path = "C:\\Users\\ACER\\IdeaProjects\\Homework8\\src\\bus.txt";
         try {
             if (index == 0) {
-
                 Files.write(Paths.get(path), str.getBytes());
             }
             else{
@@ -161,30 +155,40 @@ public class BusService {
     }
 
     public void printInfoOfOneBus(Bus bus){
-        System.out.println("Wheel number: " + bus.getWheelNumber());
-        System.out.println("Speed: " + bus.getSpeed());
-        System.out.println("Price: " + bus.getPrice());
-        System.out.println("Brand: " + bus.getBrand());
-        System.out.println("Model: " + bus.getModel());
-        System.out.println("Color: " + bus.getColor());
-        System.out.println("Made: " + bus.getMade());
-        System.out.println("Year: " + bus.getYear());
-        System.out.println("Mileage: " + bus.getMileage());
-        System.out.println("Plate number: " + bus.getPlateNumber());
-        System.out.println("The bus is working: " + bus.isWorking());
-        System.out.println("Route: " + bus.getRoute());
-        System.out.println("Route time: " + bus.getRouteTime());
+        if(bus != null) {
+            System.out.println("Wheel number: " + bus.getWheelNumber());
+            System.out.println("Speed: " + bus.getSpeed());
+            System.out.println("Price: " + bus.getPrice());
+            System.out.println("Brand: " + bus.getBrand());
+            System.out.println("Model: " + bus.getModel());
+            System.out.println("Color: " + bus.getColor());
+            System.out.println("Made: " + bus.getMade());
+            System.out.println("Year: " + bus.getYear());
+            System.out.println("Mileage: " + bus.getMileage());
+            System.out.println("Plate number: " + bus.getPlateNumber());
+            System.out.println("The bus is working: " + bus.isWorking());
+            System.out.println("Route: " + bus.getRoute());
+            System.out.println("Route time: " + bus.getRouteTime());
+        }
     }
 
     public void printWorkingBusesWithRouteKomitas(Bus[] bus){
+        int count = 0;
         for(int i=0;i<bus.length;i++){
-            if(bus[i].isWorking() && bus[i].getRoute().equals("Komitas")){
+            if(bus[i] != null && bus[i].isWorking() && bus[i].getRoute().equals("Komitas")){
                 printInfoOfOneBus(bus[i]);
+                count++;
             }
+        }
+        if(count == 0){
+            System.out.println("There are no working busses with route Komitas.");
         }
     }
 
     public void printNewerBusInfo(Bus[] bus) {
+        if(bus[0]== null) {
+            return;
+        }
         Bus newerBus = bus[0];
 
         for(int i=1;i<bus.length;i++){

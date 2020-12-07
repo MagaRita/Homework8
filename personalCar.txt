@@ -1,0 +1,3 @@
+4,30.0,400000,Audi,Volkswagen,grey,X,2020,12,12AA1001,s
+4,60.0,4000000,BMW,BMW,red,Y,2020,12,11AA1001,f
+4,100.0,100000,Chevrolet,Chevrolet,white,Z,2020,32,12AA1002,s

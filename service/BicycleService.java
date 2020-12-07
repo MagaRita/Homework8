@@ -128,35 +128,50 @@ public class BicycleService {
     }
 
     public void printInfoOfOneBicycle(Bicycle bicycle){
-        System.out.println("Wheel number: " + bicycle.getWheelNumber());
-        System.out.println("Speed: " + bicycle.getSpeed());
-        System.out.println("Price: " + bicycle.getPrice());
-        System.out.println("Brand: " + bicycle.getBrand());
-        System.out.println("Cadence: " + bicycle.getCadence());
-        System.out.println("Gear: " + bicycle.getGear());
+        if (bicycle != null) {
+            System.out.println("Wheel number: " + bicycle.getWheelNumber());
+            System.out.println("Speed: " + bicycle.getSpeed());
+            System.out.println("Price: " + bicycle.getPrice());
+            System.out.println("Brand: " + bicycle.getBrand());
+            System.out.println("Cadence: " + bicycle.getCadence());
+            System.out.println("Gear: " + bicycle.getGear());
+        }
     }
 
     public void printAllAlchemyBrandBicyclePrices(Bicycle[] bicycles) {
+        int count = 0;
         for(int i=0;i<bicycles.length;i++){
-            if(bicycles[i].getBrand().equals("Alchemy")){
+            if(bicycles[i] != null && bicycles[i].getBrand().equals("Alchemy")){
                 System.out.println("The price is: " + bicycles[i].getPrice());
+                count++;
             }
+        }
+        if(count == 0){
+            System.out.println("There are no Alchemy Brand bicycles.");
         }
     }
 
     public void printBicyclesWithGearMoreThan52(Bicycle[] bicycles) {
+        int count = 0;
         for (Bicycle b:bicycles){
-            if(b.getGear()>52){
+            if(b != null && b.getGear() > 52){
                 printInfoOfOneBicycle(b);
                 System.out.println("*********");
+                count++;
             }
+        }
+        if(count == 0) {
+            System.out.println("There are no bicycles with gear more than 52.");
         }
     }
 
     public Bicycle minimalCadence(Bicycle[] bicycles) {
+        if(bicycles[0]== null) { ;
+            return null;
+        }
         Bicycle min = bicycles[0];
         for (int i = 1; i < bicycles.length; i++) {
-            if (bicycles[i].getCadence() <= min.getCadence()) {
+            if (bicycles[i]!= null &&  bicycles[i].getCadence() <= min.getCadence()) {
                 min = bicycles[i];
             }
         }

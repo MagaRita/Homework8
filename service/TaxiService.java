@@ -1,5 +1,6 @@
 package service;
 
+import model.PublicCar;
 import model.Taxi;
 
 import java.nio.file.Files;
@@ -13,11 +14,12 @@ public class TaxiService {
 
     public boolean findTaxi(Taxi[] taxi, String addressFrom, String addressTo, int standardPrice){
         for(int i=0;i<taxi.length;i++){
-            if(taxi[i].isAvailable() && standardPrice == taxi[i].STANDARD_PRICE){
+            if(taxi[i] != null && taxi[i].isAvailable() && standardPrice == PublicCar.STANDARD_PRICE){
             taxi[i].call(addressFrom, addressTo);
             return true;
             }
         }
+        System.out.println("No taxi's found.");
         return false;
     }
 
@@ -29,13 +31,8 @@ public class TaxiService {
         String brand = "", model = "", color = "", made = "", driverName = "", plateNumber = "";
         boolean isAvailable = false;
 
-        while (true) {
-            System.out.println("Enter wheelNumber - the number can be 2 or 3");
-            wheelNumber = scanner.nextInt();
-            if (wheelNumber == 2 || wheelNumber == 3) {
-                break;
-            }
-        }
+        System.out.println("Enter wheelNumber:");
+        wheelNumber = scanner.nextInt();
         String str = wheelNumber + ",";
 
         String path = "C:\\Users\\ACER\\IdeaProjects\\Homework8\\src\\taxi.txt";
@@ -56,11 +53,11 @@ public class TaxiService {
         try {
             System.out.println("Enter speed:");
             speed = scanner.nextDouble();
-            str = Double.toString(speed) + ",";
+            str = speed + ",";
             write(path,str);
             System.out.println("Enter price:");
             price = scanner.nextInt();
-            str = Integer.toString(price) + ",";
+            str = price + ",";
             write(path,str);
             System.out.println("Enter brand:");
             brand = scanner.next();
@@ -169,18 +166,20 @@ public class TaxiService {
     }
 
     public void printInfoOfOneTaxi(Taxi taxi){
-        System.out.println("Wheel number: " + taxi.getWheelNumber());
-        System.out.println("Speed: " + taxi.getSpeed());
-        System.out.println("Price: " + taxi.getPrice());
-        System.out.println("Brand: " + taxi.getBrand());
-        System.out.println("Model: " + taxi.getModel());
-        System.out.println("Color: " + taxi.getColor());
-        System.out.println("Made: " + taxi.getMade());
-        System.out.println("Year: " + taxi.getYear());
-        System.out.println("Mileage: " + taxi.getMileage());
-        System.out.println("Plate number: " + taxi.getPlateNumber());
-        System.out.println("Route: " + taxi.getDriverName());
-        System.out.println("Route time: " + taxi.getRating());
-        System.out.println("The taxi is available: " + taxi.isAvailable());
+        if(taxi != null) {
+            System.out.println("Wheel number: " + taxi.getWheelNumber());
+            System.out.println("Speed: " + taxi.getSpeed());
+            System.out.println("Price: " + taxi.getPrice());
+            System.out.println("Brand: " + taxi.getBrand());
+            System.out.println("Model: " + taxi.getModel());
+            System.out.println("Color: " + taxi.getColor());
+            System.out.println("Made: " + taxi.getMade());
+            System.out.println("Year: " + taxi.getYear());
+            System.out.println("Mileage: " + taxi.getMileage());
+            System.out.println("Plate number: " + taxi.getPlateNumber());
+            System.out.println("Route: " + taxi.getDriverName());
+            System.out.println("Route time: " + taxi.getRating());
+            System.out.println("The taxi is available: " + taxi.isAvailable());
+        }
     }
 }
