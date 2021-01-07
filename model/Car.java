@@ -2,25 +2,52 @@ package model;
 
 public abstract class Car extends Vehicle {
 
+    /**
+     * The Car has:
+     *     model - the model of the car (any not empty string)
+     *     color - the color of the car (any not empty string)
+     *     made - the car was made in (any number in between 1900 and 2020)
+     *     year - the years the car was used since (greater or equal to the year the car was made)
+     *     mileage - the mileage of the car (any not negative value and not 0)
+     * And inherits the Vehicle: wheelNumber, speed, price, brand and plateNumber.
+     */
+
     private String model;
     private String color;
-    private String made;
+    private int made;
     private int year;
     private int mileage;
-    private String plateNumber;
 
-    public Car(int wheelNumber, double speed, int price, String brand, String model, String color, String made,
-               int year, int mileage, String plateNumber) {
-        super(wheelNumber, speed, price, brand);
-        this.model = model;
-        this.color = color;
-        this.made = made;
+    public Car(String data) {
+        super(data.substring(0, data.indexOf(',', 1 + data.indexOf(',', 1 +
+                                data.indexOf(',', 1 + data.indexOf(',', 1 +
+                                data.indexOf(',')))))));
+
+        String[] s = data.replace(data.substring(0, data.indexOf(',', 1 + data.indexOf(',', 1 +
+                                                    data.indexOf(',', 1 + data.indexOf(',', 1 +
+                                                    data.indexOf(','))))) + 1), "")
+                                                    .split(",");
+
+        setModel(s[0]);
+        setColor(s[1]);
+        setMade(Integer.parseInt(s[2]));
+        setYear(Integer.parseInt(s[3]));
+        setMileage(Integer.parseInt(s[4]));
+    }
+
+    public Car(int wheelNumber, double speed, int price, String brand, String plateNumber, String model, String color, int made,
+               int year, int mileage) {
+        super(wheelNumber, speed, price, brand, plateNumber);
+        setModel(model);
+        setColor(color);
+        setMade(made);
+        /*
         if (year < 1900) {
             throw new IllegalArgumentException();
         }
-        this.year = year;
-        this.mileage = mileage;
-        this.plateNumber = plateNumber;
+         */
+        setYear(year);
+        setMileage(mileage);
     }
 
     public String getModel() {
@@ -28,7 +55,8 @@ public abstract class Car extends Vehicle {
     }
 
     public void setModel(String model) {
-        this.model = model;
+        if(model.length() > 0)
+            this.model = model;
     }
 
     public String getColor() {
@@ -36,14 +64,16 @@ public abstract class Car extends Vehicle {
     }
 
     public void setColor(String color) {
-        this.color = color;
+        if(color.length() > 0)
+            this.color = color;
     }
 
-    public String getMade() {
+    public int getMade() {
         return made;
     }
 
-    public void setMade(String made) {
+    public void setMade(int made) {
+        if (made > 1900 && made < 2020)
         this.made = made;
     }
 
@@ -52,10 +82,8 @@ public abstract class Car extends Vehicle {
     }
 
     public void setYear(int year) {
-        if (year < 1900) {
-            throw new IllegalArgumentException();
-        }
-        this.year = year;
+        if(year >= made)
+            this.year = year;
     }
 
     public int getMileage() {
@@ -63,14 +91,33 @@ public abstract class Car extends Vehicle {
     }
 
     public void setMileage(int mileage) {
-        this.mileage = mileage;
+        if(mileage > 0)
+            this.mileage = mileage;
     }
 
-    public String getPlateNumber() {
-        return plateNumber;
+    /**
+     * The wheelNumber can be 4 for cars.
+     * @param wheelNumber
+     */
+
+    @Override
+    public void setWheelNumber(int wheelNumber) {
+        if(wheelNumber == 4){
+            super.setWheelNumber(wheelNumber);
+        }
     }
 
-    public void setPlateNumber(String plateNumber) {
-        this.plateNumber = plateNumber;
+    /**
+     * The Car info is printed.
+     */
+
+    @Override
+    public void printInfo() {
+        super.printInfo();
+        System.out.println("Model: " + getModel());
+        System.out.println("Color: " + getColor());
+        System.out.println("Made: " + getMade());
+        System.out.println("Year: " + getYear());
+        System.out.println("Mileage: " + getMileage());
     }
 }

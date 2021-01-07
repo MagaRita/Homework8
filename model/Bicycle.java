@@ -1,26 +1,36 @@
 package model;
 
-public class Bicycle extends Vehicle {
+public class Bicycle extends Vehicle implements Comparable<Bicycle>{
 
-    public int cadence;
-    public int gear;
+    /**
+     *  The Bicycle has:
+     *      cadence - cadence is the rate at which a cyclist pedals.
+     *                  It's the number of pedal revolutions per minute (any not negative value and not 0)
+     *      gear - let's assume there can be high gear and low gear
+     * And inherits the Vehicle: wheelNumber, speed, price, brand and plateNumber.
+     */
 
-    public Bicycle(int wheelNumber, double speed, int price, String brand, int cadence, int gear) {
-        super(wheelNumber, speed, price, brand);
+    private int cadence;
+    private String gear;
+
+    public Bicycle(int wheelNumber, double speed, int price, String brand, String plateNumber,
+                   int cadence, String gear) {
+        super(wheelNumber, speed, price, brand, plateNumber);
         this.cadence = cadence;
         this.gear = gear;
     }
 
-    @Override
-    public void setWheelNumber(int wheelNumber) {
-        if(wheelNumber == 2 || wheelNumber == 3){
-            setWheelNumber(wheelNumber);
-        }
-    }
+    public Bicycle(String data) {
+        super(data.substring(0, data.indexOf(',', 1 + data.indexOf(',', 1 +
+                data.indexOf(',', 1 + data.indexOf(',', 1 + data.indexOf(',')))))));
 
-    @Override
-    public void horn() {
-        System.out.println("The bicycle horn is usually a bell.");
+        String[] s = data.replace(data.substring(0, data.indexOf(',', 1 +
+                     data.indexOf(',', 1 + data.indexOf(',', 1 +
+                     data.indexOf(',', 1 + data.indexOf(','))))) + 1), "")
+                     .split(",");
+
+        setCadence(Integer.parseInt(s[0]));
+        setGear(s[1]);
     }
 
     public int getCadence() {
@@ -28,14 +38,57 @@ public class Bicycle extends Vehicle {
     }
 
     public void setCadence(int cadence) {
-        this.cadence = cadence;
+        if(cadence > 0)
+            this.cadence = cadence;
     }
 
-    public int getGear() {
+    public String getGear() {
         return gear;
     }
 
-    public void setGear(int gear) {
-        this.gear = gear;
+    public void setGear(String gear) {
+        if(gear.equals("low") || gear.equals("high"))
+            this.gear = gear;
+    }
+
+    /**
+     * The wheelNumber can be 2 or 3 for bicycles.
+     */
+
+    @Override
+    public void setWheelNumber(int wheelNumber) {
+        if(wheelNumber == 2 || wheelNumber == 3){
+            super.setWheelNumber(wheelNumber);
+        }
+    }
+
+    /**
+     * The horn sound is different for the bicycle.
+     */
+
+    @Override
+    public void horn() {
+        System.out.println("The bicycle horn is usually a bell.");
+    }
+
+    /**
+     * The bicycle info is printed.
+     */
+
+    @Override
+    public void printInfo() {
+        super.printInfo();
+        System.out.println("Cadence: " + getCadence());
+        System.out.printf("Gear: %s gear\n", getGear());
+    }
+
+    @Override
+    public String toString() {
+        return super.toString() + "," + cadence + "," + gear;
+    }
+
+    @Override
+    public int compareTo(Bicycle o) {
+        return this.cadence - o.cadence;
     }
 }

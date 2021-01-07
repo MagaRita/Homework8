@@ -1,3 +1,3 @@
-4,50.0,20000,Audi,sportback,black,X,2009,12,14BA1209,Ashot,3,true
-4,30000.0,2000000,KIA,sportage,pink,Y,2020,15,23BS0934,Suzi,5,false
-4,300000.0,1000000,Jeep,wrangler,orange,Z,2017,12,13BB1023,Anna,1,true
+4,50.0,20000,Audi,sportback
+4,30000.0,2000000,KIA,sportage
+4,300000.0,1000000,Jeep,wrangler

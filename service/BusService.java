@@ -1,9 +1,14 @@
 package service;
 
+import model.Bicycle;
 import model.Bus;
 
+import java.io.File;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 import static service.FileService.createFile;
@@ -11,12 +16,22 @@ import static service.FileService.write;
 
 public class BusService {
 
-    private Bus createBus(int index) {
+    public static final String PATH = "C:\\Users\\ACER\\IdeaProjects\\Homework8\\src\\bus.txt";
+
+    private static List<Bus> convert(List<String> data) {
+        List<Bus> bus = new ArrayList<>();
+        for (String x : data) {
+            bus.add(new Bus(x));
+        }
+        return bus;
+    }
+
+    public Bus createBus(int index) {
 
         Scanner scanner = new Scanner(System.in);
-        int wheelNumber, price = 0, year = 0, mileage = 0;
+        int wheelNumber, price = 0;
         double speed = 0, routeTime = 0;
-        String brand = "", model = "", color = "", made = "", plateNumber = "", route = "";
+        String brand = "", plateNumber = "", route = "";
         boolean isWorking = false;
 
         System.out.println("Enter wheelNumber:");
@@ -51,26 +66,6 @@ public class BusService {
             brand = scanner.next();
             str = brand + ",";
             write(path,str);
-            System.out.println("Enter model:");
-            model = scanner.next();
-            str = model + ",";
-            write(path,str);
-            System.out.println("Enter color:");
-            color = scanner.next();
-            str = color + ",";
-            write(path,str);
-            System.out.println("Enter made:");
-            made = scanner.next();
-            str = made + ",";
-            write(path,str);
-            System.out.println("Enter year:");
-            year = scanner.nextInt();
-            str = year + ",";
-            write(path,str);
-            System.out.println("Enter mileage:");
-            mileage = scanner.nextInt();
-            str = mileage + ",";
-            write(path,str);
             System.out.println("Enter plate number:");
             plateNumber = scanner.next();
             str = plateNumber + ",";
@@ -94,7 +89,7 @@ public class BusService {
             System.exit(0);
         }
 
-        return new Bus(wheelNumber, speed, price, brand, model, color, made, year, mileage, plateNumber, isWorking,
+        return new Bus(wheelNumber, speed, price, brand, plateNumber, isWorking,
                 route, routeTime);
     }
 
@@ -119,7 +114,7 @@ public class BusService {
             System.out.println();
         } else {
             String path = "C:\\Users\\ACER\\IdeaProjects\\Homework8\\src\\bus.txt";
-            String[] read = null;
+            List<String> read = null;
             try {
                 read = FileService.read(path);
             } catch (Exception e) {
@@ -129,7 +124,7 @@ public class BusService {
 
            // String str = Arrays.toString(read).substring(1, Arrays.toString(read).length()-1);
 
-            bus = new Bus[read.length];
+            bus = new Bus[read.size()];
             fillBus(bus,read);
 
             System.out.println("-----------------------");
@@ -137,55 +132,48 @@ public class BusService {
         return bus;
     }
 
-    private void fillBus(Bus[] bus, String[] row){
+    private void fillBus(Bus[] bus, List<String> row){
 
-        int defaultBusMembers = 13;
+        int defaultBusMembers = 8;
         int index = 0;
-        for(int i=0;i<row.length;i++){
-            String[] member = row[i].split(",");
+        for(int i=0;i<row.size();i++){
+            String[] member = row.get(i).split(",");
             if(member.length == defaultBusMembers){
                 bus[index++] = new Bus(Integer.parseInt(member[0]),Double.parseDouble(member[1]),
-                        Integer.parseInt(member[2]), member[3], member[4], member[5], member[6],
-                        Integer.parseInt(member[7]), Integer.parseInt(member[8]), member[9],
-                        Boolean.parseBoolean(member[10]), member[11], Double.parseDouble(member[12]));
+                        Integer.parseInt(member[2]), member[3], member[4], Boolean.parseBoolean(member[5]),
+                        member[6], Double.parseDouble(member[7]));
             } else {
                 System.out.println("Row " + i + " does not have all the bus information.");
             }
         }
     }
 
-    public void printInfoOfOneBus(Bus bus){
-        if(bus != null) {
-            System.out.println("Wheel number: " + bus.getWheelNumber());
-            System.out.println("Speed: " + bus.getSpeed());
-            System.out.println("Price: " + bus.getPrice());
-            System.out.println("Brand: " + bus.getBrand());
-            System.out.println("Model: " + bus.getModel());
-            System.out.println("Color: " + bus.getColor());
-            System.out.println("Made: " + bus.getMade());
-            System.out.println("Year: " + bus.getYear());
-            System.out.println("Mileage: " + bus.getMileage());
-            System.out.println("Plate number: " + bus.getPlateNumber());
-            System.out.println("The bus is working: " + bus.isWorking());
-            System.out.println("Route: " + bus.getRoute());
-            System.out.println("Route time: " + bus.getRouteTime());
-        }
-    }
-
-    public void printWorkingBusesWithRouteKomitas(Bus[] bus){
+    public void printWorkingBusesWithRouteKomitas(List<Bus> bus){
         int count = 0;
-        for(int i=0;i<bus.length;i++){
-            if(bus[i] != null && bus[i].isWorking() && bus[i].getRoute().equals("Komitas")){
-                printInfoOfOneBus(bus[i]);
+
+        for(Bus b:bus){
+            if(b != null && b.isWorking() && b.getRoute().equals("Komitas")){
+                b.printInfo();
                 count++;
             }
         }
+        /*
+        for(int i=0;i<bus.length;i++){
+            if(bus[i] != null && bus[i].isWorking() && bus[i].getRoute().equals("Komitas")){
+                printBusInfo(bus[i]);
+                count++;
+            }
+        }
+
+         */
         if(count == 0){
             System.out.println("There are no working busses with route Komitas.");
         }
     }
 
-    public void printNewerBusInfo(Bus[] bus) {
+    /*
+
+    public void printBus(Bus[] bus) {
         if(bus[0]== null) {
             return;
         }
@@ -196,6 +184,91 @@ public class BusService {
                 newerBus = bus[i];
             }
         }
-        printInfoOfOneBus(newerBus);
+        printBusInfo(newerBus);
+    }
+
+     */
+
+    public List<Bus> removeBus(int busNumber) {
+
+        int index = busNumber - 1;
+        List<Bus> bus = null;
+        if (createFile("bus.txt")) {
+            System.out.println("There are no buses available at the moment." +
+                    "\nPlease choose one of the other options or return to the Admin Main Menu.");
+            return null;
+        } else {
+            try {
+                bus = convert(FileService.read(PATH));
+
+                for (int i = 0; i < bus.size(); i++) {
+
+                    if (i == index) {
+                        bus.remove(i);
+                    }
+                }
+                File file = new File("C:\\Users\\ACER\\IdeaProjects\\Homework8\\src\\bus.txt");
+                File temp = File.createTempFile("file2", ".txt", file.getParentFile());
+                for (Bus b : bus) {
+                    write(String.valueOf(temp), b.toString());
+                    write(String.valueOf(temp), "\n");
+                }
+                file.delete();
+                temp.renameTo(file);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return  bus;
+    }
+
+    public Bus chooseBus(int busNumber){
+
+        int index = busNumber-1;
+        if (createFile("bus.txt")) {
+            System.out.println("There are no buses available at the moment." +
+                    "\nPlease choose one of the other options or return to the Admin Main Menu.");
+        } else {
+            try {
+                List<Bus> bus = convert(FileService.read(PATH));
+                for (int i = 0;i<bus.size();i++){
+                    if(i == index){
+                        return bus.get(i);
+                    }
+                }
+            } catch (Exception e) {
+                System.out.println("An error occurred.");
+                e.printStackTrace();
+            }
+        }
+        return null;
+    }
+
+    /**
+     * If there is no bus.txt file, then the user gets the message that there are no bus available.
+     * Otherwise, the info from the file is read and bus are created with that info.
+     *
+     * @return
+     */
+    public List<Bus> fillBusInfo() {
+
+        String busFileName = "bicycle.txt";
+        List<Bus> bus = null;
+
+        if (createFile(busFileName)) {
+            System.out.println("There are no buses available at the moment." +
+                    "\nPlease choose one of the other options or return to the Main Menu.");
+            return null;
+        } else {
+            try {
+                bus = convert(FileService.read(PATH));
+            } catch (Exception e) {
+                System.out.println("An error occurred.");
+                e.printStackTrace();
+            }
+
+            System.out.println("-----------------------");
+        }
+        return bus;
     }
 }

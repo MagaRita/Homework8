@@ -1,4 +1,4 @@
-4,30.0,30000,BraunAbility,smth,white,X,2020,12,11AQ1001,true,Kentron,2.0
-4,40.0,30000,Krystal,shuttle,red,Y,2018,43,12AP1002,false,Raykom,3.0
-4,100.0,500000,BraunAbility,van,yellow,Z,2001,54,13AA1001,true,Tashir,1.0
-4,30.0,400000,McSweeney,bus,green,A,2020,43,14AA1001,true,Zeytun,4.0
+4,30.0,30000,BraunAbility,11AQ1001
+4,40.0,30000,Krystal,12AP1002
+4,100.0,500000,BraunAbility,13AA1001
+4,30.0,400000,McSweeney,14AA1001

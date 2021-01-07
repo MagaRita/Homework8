@@ -1,22 +1,31 @@
 package service;
 
+import comparator.bicycle.PriceComparator;
 import model.Bicycle;
 
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.Scanner;
+import java.util.*;
 
-import static service.FileService.createFile;
-import static service.FileService.write;
+import static service.FileService.*;
 
 public class BicycleService {
 
-    private Bicycle createBicycle(int index) {
+    public static final String PATH = "C:\\Users\\ACER\\IdeaProjects\\Homework8\\src\\bicycle.txt";
+
+    private static List<Bicycle> convert(List<String> data) {
+        List<Bicycle> bicycles = new ArrayList<>();
+        for (String x : data) {
+            bicycles.add(new Bicycle(x));
+        }
+        return bicycles;
+    }
+
+    public Bicycle createBicycle(int index) {
 
         Scanner scanner = new Scanner(System.in);
-        int wheelNumber, price = 0, cadence = 0, gear = 0;
-        double speed = 0;
-        String brand = "";
+        int wheelNumber;
 
         while (true) {
             System.out.println("Enter wheelNumber - the number can be 2 or 3");
@@ -27,42 +36,46 @@ public class BicycleService {
         }
         String str = wheelNumber + ",";
 
-        String path = "C:\\Users\\ACER\\IdeaProjects\\Homework8\\src\\bicycle.txt";
-        try{
+        try {
             if (index == 0) {
-                Files.write(Paths.get(path), str.getBytes());
+                Files.write(Paths.get(PATH), str.getBytes());
+            } else {
+                write(PATH, str);
             }
-            else{
-                write(path,str);
-            }
-        }
-        catch (Exception exception) {
+        } catch (Exception exception) {
             System.out.println("An error occurred.");
             exception.printStackTrace();
             System.exit(0);
         }
 
+        int price = 0, cadence = 0;
+        double speed = 0;
+        String gear = "", brand = "", plateNumber = "";
+
         try {
             System.out.println("Enter speed:");
             speed = scanner.nextDouble();
-            str = Double.toString(speed) + ",";
-            write(path,str);
+            str = speed + ",";
+            write(PATH, str);
             System.out.println("Enter price:");
             price = scanner.nextInt();
-            str = Integer.toString(price) + ",";
-            write(path,str);
+            str = price + ",";
+            write(PATH, str);
             System.out.println("Enter brand:");
             brand = scanner.next();
             str = brand + ",";
-            write(path,str);
+            write(PATH, str);
+            System.out.println("Enter plate number:");
+            plateNumber = scanner.next();
+            str = plateNumber + ",";
+            write(PATH, str);
             System.out.println("Enter cadence:");
             cadence = scanner.nextInt();
-            str = Integer.toString(cadence) + ",";
-            write(path,str);
+            str = cadence + ",";
+            write(PATH, str);
             System.out.println("Enter gear:");
-            gear = scanner.nextInt();
-            str =  Integer.toString(gear);
-            write(path,str + "\n");
+            gear = scanner.next();
+            write(PATH, gear + "\n");
             System.out.println("Successfully wrote in the file.");
         } catch (Exception exception) {
             System.out.println("An error occurred.");
@@ -70,9 +83,257 @@ public class BicycleService {
             System.exit(0);
         }
 
-        return new Bicycle(wheelNumber, speed, price, brand, cadence, gear);
+        return new Bicycle(wheelNumber, speed, price, brand, plateNumber, cadence, gear);
     }
 
+    /**
+     * If there is no bicycle.txt file, then the user gets the message that there are no bicycles available.
+     * Otherwise, the info from the file is read and bicycles are created with that info.
+     *
+     * @return
+     */
+    public List<Bicycle> fillBicycleInfo() {
+
+        String bicycleFileName = "bicycle.txt";
+        List<Bicycle> bicycles = null;
+
+        if (createFile(bicycleFileName)) {
+            System.out.println("There are no bicycle's available at the moment." +
+                    "\nPlease choose one of the other options or return to the Main Menu.");
+            return null;
+        } else {
+            try {
+                bicycles = convert(FileService.read(PATH));
+            } catch (Exception e) {
+                System.out.println("An error occurred.");
+                e.printStackTrace();
+            }
+
+            System.out.println("-----------------------");
+        }
+        return bicycles;
+    }
+
+    public void printAllAlchemyBrandBicyclePrices(List<Bicycle> bicycles) {
+        int count = 0;
+        for (Bicycle b : bicycles) {
+            if (b != null && b.getBrand().equals("Alchemy")) {
+                System.out.println("The price is: " + b.getPrice());
+                count++;
+            }
+        }
+
+        if (count == 0) {
+            System.out.println("There are no Alchemy Brand bicycles.");
+        }
+    }
+
+    public void printBicyclesWithHighGear(List<Bicycle> bicycles) {
+        int count = 0;
+        for (Bicycle b : bicycles) {
+            if (b != null && b.getGear().equals("high")) {
+                b.printInfo();
+                System.out.println("*********");
+                count++;
+            }
+        }
+        if (count == 0) {
+            System.out.println("There are no bicycles with high gear.");
+        }
+    }
+
+    public Bicycle maxCadence(List<Bicycle> bicycles) {
+      /*
+        if(bicycles.get(0) == null) {
+            return null;
+        }
+        Bicycle max = bicycles.get(0);
+        for(int i = 1; i < bicycles.size(); i++){
+            Bicycle b = bicycles.get(i);
+            if(b != null && max.getCadence() <= b.getCadence()){
+                max = b;
+            }
+        }
+        return max;
+       */
+        //   try{
+        return Collections.max(bicycles);
+        //    } catch (NullPointerException e){
+        //       return ;
+        //    }
+    }
+
+    public void orderByPriceAsc(List<Bicycle> bicycles) {
+
+        Collections.sort(bicycles, new PriceComparator());
+       /* StringJoiner sj = new StringJoiner(" ");
+        for(Bicycle b:bicycles){
+            sj.add(sj.toString());
+        }
+        return sj.toString();
+
+        */
+
+        /*
+
+        Bicycle temp;
+        for (int i = 0; i < bicycles.size(); i++){
+            for (int j = 1; j < (bicycles.size() - i); j++) {
+                Bicycle b1 = bicycles.get(j - 1), b2 = bicycles.get(j);
+                if (b1.getPrice() > b2.getPrice()) {
+                    temp = b1;
+                    b1 = b2;
+                    b2 = temp;
+                }
+            }
+        }
+
+        for (Bicycle b:bicycles){
+            System.out.println("*********");
+            b.printInfo();
+        }
+
+         */
+    }
+
+
+    public void orderByPriceDesc(List<Bicycle> bicycles) {
+        Collections.sort(bicycles, new PriceComparator().reversed());
+      /*  StringJoiner sj = new StringJoiner(" ");
+        for(Bicycle b:bicycles){
+            sj.add(sj.toString());
+        }
+        return sj.toString();
+       */
+    }
+
+    public List<Bicycle> removeBicycle(int bicycleNumber) {
+
+        int index = bicycleNumber - 1;
+        List<Bicycle> bicycles = null;
+        if (createFile("bicycle.txt")) {
+            System.out.println("There are no bicycle's available at the moment." +
+                    "\nPlease choose one of the other options or return to the Admin Main Menu.");
+            return null;
+        } else {
+            try {
+                bicycles = convert(FileService.read(PATH));
+
+                for (int i = 0; i < bicycles.size(); i++) {
+
+                    if (i == index) {
+                        bicycles.remove(i);
+                    }
+                }
+                File file = new File("C:\\Users\\ACER\\IdeaProjects\\Homework8\\src\\bicycle.txt");
+                File temp = File.createTempFile("file", ".txt", file.getParentFile());
+                for (Bicycle b : bicycles) {
+                    write(String.valueOf(temp), b.toString());
+                    write(String.valueOf(temp), "\n");
+                }
+                file.delete();
+                temp.renameTo(file);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return  bicycles;
+    }
+
+                /*
+                for (int i = 0; i<bicycles.size();i++){
+
+                    if(i == index){
+                        bicycles.remove(i);
+                        if (file.delete()) {
+                            System.out.println("Deleted the file: " + file.getName());
+                        } else {
+                            System.out.println("Failed to delete the file.");
+                        }
+                        for (Bicycle b:bicycles) {
+                            write(String.valueOf(temp), bicycles.toString());
+                            System.out.println();
+                        }
+                        temp.renameTo(file);
+                    }
+                }
+            } catch (Exception e) {
+                System.out.println("An error occurred.");
+                e.printStackTrace();
+
+
+
+                 */
+
+    public Bicycle chooseBicycle(int bicycleNumber){
+
+        int index = bicycleNumber-1;
+        if (createFile("bicycle.txt")) {
+            System.out.println("There are no bicycle's available at the moment." +
+                    "\nPlease choose one of the other options or return to the Admin Main Menu.");
+        } else {
+            try {
+                List<Bicycle> bicycles = convert(FileService.read(PATH));
+                for (int i = 0;i<bicycles.size();i++){
+                    if(i == index){
+                        return bicycles.get(i);
+                    }
+                }
+            } catch (Exception e) {
+                System.out.println("An error occurred.");
+                e.printStackTrace();
+            }
+        }
+        return null;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    /*
    public Bicycle[] writeOrReadInfoInBicycleObject(){
 
        String bicycleFileName = "bicycle.txt";
@@ -94,7 +355,7 @@ public class BicycleService {
            System.out.println();
        } else {
            String path = "C:\\Users\\ACER\\IdeaProjects\\Homework8\\src\\bicycle.txt";
-           String[] read = null;
+           List<String> read = null;
            try {
                read = FileService.read(path);
            } catch (Exception e) {
@@ -102,44 +363,47 @@ public class BicycleService {
                e.printStackTrace();
            }
 
-        //   String str = Arrays.toString(read).substring(1, Arrays.toString(read).length()-1);
-
-           bicycles = new Bicycle[read.length];
+           bicycles = new Bicycle[read.size()];
            fillBicycle(bicycles,read);
 
            System.out.println("-----------------------");
        }
        return bicycles;
    }
+     */
 
-    private void fillBicycle(Bicycle[] bicycles, String[] row){
+    /**
+     * The file info is split into rows and then each part is separated using the comma and filled into the bicycle.
+     */
 
-        int defaultBicycleMembers = 6;
+    /*
+    private void fillIntoBicycle(List<Bicycle> bicycles, List<String>row){
+
+        int defaultBicycleMembers = 7;
         int index = 0;
-        for(int i=0;i<row.length;i++){
-            String[] member = row[i].split(",");
-            if(member.length == defaultBicycleMembers){
-                bicycles[index++] = new Bicycle(Integer.parseInt(member[0]),Double.parseDouble(member[1]),
-                        Integer.parseInt(member[2]), member[3], Integer.parseInt(member[4]), Integer.parseInt(member[5]));
-            } else {
+        for(int i=0;i<row.size();i++){
+            List<String> member = Arrays.asList(row.get(i).split(","));
+            if(member.size() == defaultBicycleMembers){
+                Bicycle b = bicycles.get( index++);
+                b = new Bicycle(Integer.parseInt(member.get(0)),
+                        Double.parseDouble(member.get(1)), Integer.parseInt(member.get(2)), member.get(3), member.get(4),
+                        Integer.parseInt(member.get(5)), member.get(6));
+
+                //bicycles.get(index++) = new List<Bicycle>(AInteger.parseInt(member.get(0)),
+               //         Double.parseDouble(member.get(1)), Integer.parseInt(member.get(2)), member.get(3), member.get(4),
+               //         Integer.parseInt(member.get(5)), member.get(6));
+            }
+            else {
+                // If there is one row that has a missing info for the bicycle, then I print it for myself.
+                //No eed for the user to see this.
                 System.out.println("Row " + i + " does not have all the bicycle information.");
             }
         }
     }
 
-    public void printInfoOfOneBicycle(Bicycle bicycle){
-        if (bicycle != null) {
-            System.out.println("Wheel number: " + bicycle.getWheelNumber());
-            System.out.println("Speed: " + bicycle.getSpeed());
-            System.out.println("Price: " + bicycle.getPrice());
-            System.out.println("Brand: " + bicycle.getBrand());
-            System.out.println("Cadence: " + bicycle.getCadence());
-            System.out.println("Gear: " + bicycle.getGear());
-        }
-    }
 
-    public void printAllAlchemyBrandBicyclePrices(Bicycle[] bicycles) {
-        int count = 0;
+     */
+        /*
         for(int i=0;i<bicycles.length;i++){
             if(bicycles[i] != null && bicycles[i].getBrand().equals("Alchemy")){
                 System.out.println("The price is: " + bicycles[i].getPrice());
@@ -150,49 +414,4 @@ public class BicycleService {
             System.out.println("There are no Alchemy Brand bicycles.");
         }
     }
-
-    public void printBicyclesWithGearMoreThan52(Bicycle[] bicycles) {
-        int count = 0;
-        for (Bicycle b:bicycles){
-            if(b != null && b.getGear() > 52){
-                printInfoOfOneBicycle(b);
-                System.out.println("*********");
-                count++;
-            }
-        }
-        if(count == 0) {
-            System.out.println("There are no bicycles with gear more than 52.");
-        }
-    }
-
-    public Bicycle minimalCadence(Bicycle[] bicycles) {
-        if(bicycles[0]== null) { ;
-            return null;
-        }
-        Bicycle min = bicycles[0];
-        for (int i = 1; i < bicycles.length; i++) {
-            if (bicycles[i]!= null &&  bicycles[i].getCadence() <= min.getCadence()) {
-                min = bicycles[i];
-            }
-        }
-        return min;
-    }
-
-    public void orderByPrice(Bicycle[] bicycles) {
-        Bicycle temp;
-        for (int i = 0; i < bicycles.length; i++){
-            for (int j = 1; j < (bicycles.length - i); j++) {
-                if (bicycles[j - 1].getPrice() > bicycles[j].getPrice()) {
-                    temp = bicycles[j - 1];
-                    bicycles[j - 1] = bicycles[j];
-                    bicycles[j] = temp;
-                }
-            }
-        }
-
-        for (Bicycle b:bicycles){
-            System.out.println("*********");
-            printInfoOfOneBicycle(b);
-        }
-    }
-}
+         */
