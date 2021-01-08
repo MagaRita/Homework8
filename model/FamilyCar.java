@@ -3,13 +3,13 @@ package model;
 public class FamilyCar extends Car {
 
     /**
-     * The Personal Car has:
-     *     type -
+     * The Family Car has:
+     * type - can be a small car or a big one
      * And inherits the Car which inherits the Vehicle: model, color, made, year, mileage, plateNumber,
      * wheelNumber, speed, price and brand.
      */
 
-    char type;
+    char type = 's';
 
     public FamilyCar(String data) {
 
@@ -38,7 +38,7 @@ public class FamilyCar extends Car {
     }
 
     public void setType(char type) {
-        if (type == 's' || type == 'f')
+        if (type == 's' || type == 'b')
             this.type = type;
     }
 
@@ -59,5 +59,10 @@ public class FamilyCar extends Car {
     public void printInfo() {
         super.printInfo();
         System.out.println("Type: " + getType());
+    }
+
+    @Override
+    public String toString() {
+        return String.valueOf(type);
     }
 }

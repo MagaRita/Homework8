@@ -1,3 +1,3 @@
-4,50.0,20000,Audi,sportback
-4,30000.0,2000000,KIA,sportage
-4,300000.0,1000000,Jeep,wrangler
+4,50.0,20000,Audi,12AA1232,sportback,green,2000,2010,32,David,4,true
+4,30000.0,2000000,KIA,12AQ1232,sportage,white,2000,2001,42,Ashot,2,false
+4,300000.0,1000000,Jeep,12AQ1232,wrangler,grey,2000,2002,54,Ani,5,true

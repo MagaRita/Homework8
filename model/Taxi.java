@@ -11,15 +11,14 @@ public class Taxi extends Car {
      * plateNumber, wheelNumber, speed, price and brand.
      */
 
-
     /**
      * The taxi standard price is set to 500.
      */
 
     public static final int STANDARD_PRICE_TAXI = 500;
 
-    private String driverName;
-    private byte rating;
+    private String driverName = "David";
+    private byte rating = 5;
     private boolean isAvailable;
 
     public Taxi(String data) {
@@ -47,19 +46,8 @@ public class Taxi extends Car {
         super(wheelNumber, speed, price, brand, plateNumber, model, color, made, year, mileage);
         setDriverName(driverName);
         setRating(rating);
-        this.isAvailable = isAvailable;
+        setAvailable(isAvailable);
     }
-
-    /*
-    public Taxi(){
-        super(4, 60, 100, "Volvo V70", "03AA1201","", "yellow",
-                2000, 2001, 30);
-        this.driverName = "";
-        this.rating = 5;
-        this.isAvailable = true;
-    }
-
-     */
 
     public String getDriverName() {
         return driverName;
@@ -84,7 +72,8 @@ public class Taxi extends Car {
     }
 
     public void setAvailable(boolean available) {
-        isAvailable = available;
+        if (String.valueOf(isAvailable).equals("true") || String.valueOf(isAvailable).equals("false"))
+            isAvailable = available;
     }
 
     /**
@@ -124,5 +113,10 @@ public class Taxi extends Car {
         System.out.println("Route: " + getDriverName());
         System.out.println("Route time: " + getRating());
         System.out.println("The taxi is available: " + (isAvailable()? "Yes":"No"));
+    }
+
+    @Override
+    public String toString() {
+        return driverName + "," + rating + "," + isAvailable;
     }
 }

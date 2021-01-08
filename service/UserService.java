@@ -38,6 +38,7 @@ public class UserService {
      * @param email
      * @return
      */
+
     public static boolean validateEmail(String email) {
         Matcher matcher = VALID_EMAIL_ADDRESS_REGEX.matcher(email);
         return matcher.find();
@@ -70,38 +71,9 @@ public class UserService {
                 System.out.println("An error occurred.");
                 e.printStackTrace();
             }
-
-            System.out.println("-----------------------");
         }
         return users;
     }
-
-    /**
-     * After reading from the database.txt file, the info is filled in the User array and users are created.
-     * If any of the info related to the user is missing from the file, "That row does not have all the user
-     * information" message will be printed.
-     * @param read
-     * @return
-     */
-
-      /*
-    public User[] fillUserInfo(List<String> read) {
-
-        int defaultUserMembers = 4;
-        int index = 0;
-        User[] users = new User[read.size()];
-
-        for (int i = 0; i < read.size(); i++) {
-            String[] member = read.get(i).split(",");
-            if (member.length == defaultUserMembers) {
-                users[index++] = new User(member[0], member[1], member[2], member[3]);
-            } else {
-                System.out.println("Row " + i + " does not have all the user information.");
-            }
-        }
-        return users;
-    }
-    */
 
     /**
      * convert function converts the List<String> into Users.
@@ -318,12 +290,13 @@ public class UserService {
     }
 
     /**
-     * newUser() function checks whether the database.txt file exists or not.
+     * newUser() function checks whether the registration information is the same as the admin credentials or not.
+     * If it's the same then the message appears and it returns false as the user cannot register with the admin
+     * credentials.
+     * Then it checks whether the database.txt file exists or not.
      * If the file doesn't exist, the createFile function will return true and then it will create the file and
-     * check whether the username and password are equal to the admin credentials or not.
-     * If they are equal, then it returns false as the user cannot register with the admin credentials.
-     * Otherwise, if the credentials are not equal, the user will be registered and the info will be added to the
-     * database.txt file and newUser function will return true.
+     * the user will be registered and the info will be added to the database.txt file and newUser function will
+     * return true.
      * If the file exists, createFile function will return false and the checkUser function will be called,
      * which will check whether the credentials are correct or not.
      * @param fullName
@@ -335,12 +308,12 @@ public class UserService {
 
     public static boolean newUser(String fullName, String username, String email, String password) {
 
-        if (FileService.createFile("database.txt")) {
+        if (User.getAdminUsername().equals(username) && User.getAdminPassword().equals(password)) {
+            System.out.println("You are already registered. Please Login.");
+            return false;
+        }
 
-            if (User.getAdminUsername().equals(username) && User.getAdminPassword().equals(password)) {
-                System.out.println("You are already logged in. Please Login.");
-                return false;
-            } else {
+        if (FileService.createFile("database.txt")) {
                 try {
                     Files.write(Paths.get(PATH), fullName.getBytes());
                     FileService.write(PATH, "," + username);
@@ -352,16 +325,16 @@ public class UserService {
                 }
                 return true;
             }
-        }
+
         return checkUser(fullName, username, email, password);
     }
 
     /**
-     * In checkUser() function, the database.txt file already exists and the user typed username and email are
-     * firstly compared to the admin credentials and then to the file username and emails.
+     * In checkUser function, the database.txt file already exists and the user typed username and email are
+     * are not the same as the admin credentials.
      * If the user typed username and password are unique and aren't equal to any of the ones in the file, then the
      * user can be registered.
-     * Otherwise, the user will get the message "You are already logged in. Please Login." and will need to choose
+     * Otherwise, the user will get the message "You are already registered. Please Login." and will need to choose
      * whether to login or register again.
      * @param fullName
      * @param username
@@ -372,10 +345,6 @@ public class UserService {
 
     public static boolean checkUser(String fullName, String username, String email, String password) {
 
-        if (User.getAdminUsername().equals(username) && User.getAdminPassword().equals(password)) {
-            System.out.println("You are already logged in. Please Login.");
-            return false;
-        } else {
             try {
                 List<String> read = FileService.read(PATH);
 
@@ -401,7 +370,7 @@ public class UserService {
                         exception.printStackTrace();
                     }
                 } else {
-                    System.out.println("You are already logged in. Please Login.");
+                    System.out.println("You are already registered. Please Login.");
                 }
 
             } catch (Exception e) {
@@ -409,7 +378,6 @@ public class UserService {
                 e.printStackTrace();
             }
             return false;
-        }
     }
 
     /**

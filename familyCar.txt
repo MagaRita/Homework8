@@ -1,3 +1,3 @@
-4,30.0,400000,Audi,Volkswagen
-4,60.0,4000000,BMW,BMW
-4,100.0,100000,Chevrolet,Chevrolet
+4,30.0,400000,Audi,11SA1232,Volkswagen,red,2000,2010,12,s
+4,60.0,4000000,BMW,21MM1232,BMW,white,2001,2002,30,b
+4,100.0,100000,Chevrolet,21AA2322,Chevrolet,blue,2019,2020,20,s

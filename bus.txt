@@ -1,4 +1,4 @@
-4,30.0,30000,BraunAbility,11AQ1001
-4,40.0,30000,Krystal,12AP1002
-4,100.0,500000,BraunAbility,13AA1001
-4,30.0,400000,McSweeney,14AA1001
+4,30.0,30000,BraunAbility,11AQ1001,true,Komitas,2
+4,40.0,30000,Krystal,12AP1002,false,Xanjyan,3
+4,100.0,500000,BraunAbility,13AA1001,true,Manument,1
+4,30.0,400000,McSweeney,14AA1001,true,Komitas,2

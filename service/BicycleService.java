@@ -12,7 +12,18 @@ import static service.FileService.*;
 
 public class BicycleService {
 
+    /**
+     * In the bicycle.txt file, the bicycle info is saved and that PATH will be used in a few places in the
+     * BicycleService class.
+     */
+
     public static final String PATH = "C:\\Users\\ACER\\IdeaProjects\\Homework8\\src\\bicycle.txt";
+
+    /**
+     * convert function converts the List<String> into Bicycles.
+     * @param data
+     * @return
+     */
 
     private static List<Bicycle> convert(List<String> data) {
         List<Bicycle> bicycles = new ArrayList<>();
@@ -21,6 +32,12 @@ public class BicycleService {
         }
         return bicycles;
     }
+
+    /**
+     * The bicycle info is added by the admin.
+     * @param index
+     * @return
+     */
 
     public Bicycle createBicycle(int index) {
 
@@ -53,30 +70,66 @@ public class BicycleService {
         String gear = "", brand = "", plateNumber = "";
 
         try {
-            System.out.println("Enter speed:");
-            speed = scanner.nextDouble();
+            while (true) {
+                System.out.println("Enter speed - not a negative number and not 0.");
+                speed = scanner.nextDouble();
+                if (speed > 0) {
+                    break;
+                }
+            }
             str = speed + ",";
             write(PATH, str);
-            System.out.println("Enter price:");
-            price = scanner.nextInt();
+
+            while (true) {
+                System.out.println("Enter price - not a negative number and not 0.");
+                price = scanner.nextInt();
+                if (price > 0) {
+                    break;
+                }
+            }
+
             str = price + ",";
             write(PATH, str);
-            System.out.println("Enter brand:");
-            brand = scanner.next();
+
+            while (true) {
+                System.out.println("Enter brand - any not empty string.");
+                brand = scanner.next();
+                if (brand.length() > 0) {
+                    break;
+                }
+            }
+
             str = brand + ",";
             write(PATH, str);
-            System.out.println("Enter plate number:");
-            plateNumber = scanner.next();
+
+            while (true) {
+                System.out.println("Enter plate number - should have 5-8 characters in the string.");
+                plateNumber = scanner.next();
+                if(plateNumber.length() >= 5 && plateNumber.length() <= 8)
+                    break;
+            }
+
             str = plateNumber + ",";
             write(PATH, str);
-            System.out.println("Enter cadence:");
-            cadence = scanner.nextInt();
+
+            while (true) {
+                System.out.println("Enter cadence - any not negative value and not 0.");
+                cadence = scanner.nextInt();
+                if(cadence > 0)
+                    break;
+            }
+
             str = cadence + ",";
             write(PATH, str);
-            System.out.println("Enter gear:");
-            gear = scanner.next();
+
+            while (true) {
+                System.out.println("Enter gear - there can be high and low gear.");
+                gear = scanner.next();
+                if(gear.equals("low") || gear.equals("high"))
+                    break;
+            }
+
             write(PATH, gear + "\n");
-            System.out.println("Successfully wrote in the file.");
         } catch (Exception exception) {
             System.out.println("An error occurred.");
             exception.printStackTrace();
@@ -108,104 +161,17 @@ public class BicycleService {
                 System.out.println("An error occurred.");
                 e.printStackTrace();
             }
-
-            System.out.println("-----------------------");
         }
         return bicycles;
     }
 
-    public void printAllAlchemyBrandBicyclePrices(List<Bicycle> bicycles) {
-        int count = 0;
-        for (Bicycle b : bicycles) {
-            if (b != null && b.getBrand().equals("Alchemy")) {
-                System.out.println("The price is: " + b.getPrice());
-                count++;
-            }
-        }
-
-        if (count == 0) {
-            System.out.println("There are no Alchemy Brand bicycles.");
-        }
-    }
-
-    public void printBicyclesWithHighGear(List<Bicycle> bicycles) {
-        int count = 0;
-        for (Bicycle b : bicycles) {
-            if (b != null && b.getGear().equals("high")) {
-                b.printInfo();
-                System.out.println("*********");
-                count++;
-            }
-        }
-        if (count == 0) {
-            System.out.println("There are no bicycles with high gear.");
-        }
-    }
-
-    public Bicycle maxCadence(List<Bicycle> bicycles) {
-      /*
-        if(bicycles.get(0) == null) {
-            return null;
-        }
-        Bicycle max = bicycles.get(0);
-        for(int i = 1; i < bicycles.size(); i++){
-            Bicycle b = bicycles.get(i);
-            if(b != null && max.getCadence() <= b.getCadence()){
-                max = b;
-            }
-        }
-        return max;
-       */
-        //   try{
-        return Collections.max(bicycles);
-        //    } catch (NullPointerException e){
-        //       return ;
-        //    }
-    }
-
-    public void orderByPriceAsc(List<Bicycle> bicycles) {
-
-        Collections.sort(bicycles, new PriceComparator());
-       /* StringJoiner sj = new StringJoiner(" ");
-        for(Bicycle b:bicycles){
-            sj.add(sj.toString());
-        }
-        return sj.toString();
-
-        */
-
-        /*
-
-        Bicycle temp;
-        for (int i = 0; i < bicycles.size(); i++){
-            for (int j = 1; j < (bicycles.size() - i); j++) {
-                Bicycle b1 = bicycles.get(j - 1), b2 = bicycles.get(j);
-                if (b1.getPrice() > b2.getPrice()) {
-                    temp = b1;
-                    b1 = b2;
-                    b2 = temp;
-                }
-            }
-        }
-
-        for (Bicycle b:bicycles){
-            System.out.println("*********");
-            b.printInfo();
-        }
-
-         */
-    }
-
-
-    public void orderByPriceDesc(List<Bicycle> bicycles) {
-        Collections.sort(bicycles, new PriceComparator().reversed());
-      /*  StringJoiner sj = new StringJoiner(" ");
-        for(Bicycle b:bicycles){
-            sj.add(sj.toString());
-        }
-        return sj.toString();
-       */
-    }
+    /**
+     * The admin chooses the bicycle number, but as the numbers start from 0, the index is one less. If there is no
+     * file with bicycles, then the message will appear. Otherwise, the chosen bicycle will be deleted and the temp
+     * file won't contain that bicycle and then the temp file will be renamed.
+     * @param bicycleNumber
+     * @return
+     */
 
     public List<Bicycle> removeBicycle(int bicycleNumber) {
 
@@ -225,7 +191,7 @@ public class BicycleService {
                         bicycles.remove(i);
                     }
                 }
-                File file = new File("C:\\Users\\ACER\\IdeaProjects\\Homework8\\src\\bicycle.txt");
+                File file = new File(PATH);
                 File temp = File.createTempFile("file", ".txt", file.getParentFile());
                 for (Bicycle b : bicycles) {
                     write(String.valueOf(temp), b.toString());
@@ -240,30 +206,13 @@ public class BicycleService {
         return  bicycles;
     }
 
-                /*
-                for (int i = 0; i<bicycles.size();i++){
-
-                    if(i == index){
-                        bicycles.remove(i);
-                        if (file.delete()) {
-                            System.out.println("Deleted the file: " + file.getName());
-                        } else {
-                            System.out.println("Failed to delete the file.");
-                        }
-                        for (Bicycle b:bicycles) {
-                            write(String.valueOf(temp), bicycles.toString());
-                            System.out.println();
-                        }
-                        temp.renameTo(file);
-                    }
-                }
-            } catch (Exception e) {
-                System.out.println("An error occurred.");
-                e.printStackTrace();
-
-
-
-                 */
+    /**
+     * The admin can choose which bicycle they need. The admin chooses the bicycle number, but as the numbers start
+     * from 0, the index is one less. If the file doesn't exist then the message will appear.
+     * Otherwise, the bicycle the admin chose, will be returned.
+     * @param bicycleNumber
+     * @return
+     */
 
     public Bicycle chooseBicycle(int bicycleNumber){
 
@@ -286,132 +235,111 @@ public class BicycleService {
         }
         return null;
     }
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    /*
-   public Bicycle[] writeOrReadInfoInBicycleObject(){
-
-       String bicycleFileName = "bicycle.txt";
-       Bicycle[] bicycles;
-
-       if(createFile(bicycleFileName)) {
-
-           System.out.println("-----------------------");
-           System.out.print("Type how many bicycles should be created: ");
-           Scanner s = new Scanner(System.in);
-           int count = s.nextInt();
-           System.out.println("We will create " + count + " different bicycles.");
-           System.out.println("Let's enter the information for each of them: ");
-           bicycles = new Bicycle[count];
-
-           for (int i = 0; i < count; i++) {
-               bicycles[i] = createBicycle(i);
-           }
-           System.out.println();
-       } else {
-           String path = "C:\\Users\\ACER\\IdeaProjects\\Homework8\\src\\bicycle.txt";
-           List<String> read = null;
-           try {
-               read = FileService.read(path);
-           } catch (Exception e) {
-               System.out.println("An error occurred.");
-               e.printStackTrace();
-           }
-
-           bicycles = new Bicycle[read.size()];
-           fillBicycle(bicycles,read);
-
-           System.out.println("-----------------------");
-       }
-       return bicycles;
-   }
-     */
 
     /**
-     * The file info is split into rows and then each part is separated using the comma and filled into the bicycle.
+     * The bicycles are ordered by price in the descending order.
+     * @param bicycles
      */
 
-    /*
-    private void fillIntoBicycle(List<Bicycle> bicycles, List<String>row){
-
-        int defaultBicycleMembers = 7;
-        int index = 0;
-        for(int i=0;i<row.size();i++){
-            List<String> member = Arrays.asList(row.get(i).split(","));
-            if(member.size() == defaultBicycleMembers){
-                Bicycle b = bicycles.get( index++);
-                b = new Bicycle(Integer.parseInt(member.get(0)),
-                        Double.parseDouble(member.get(1)), Integer.parseInt(member.get(2)), member.get(3), member.get(4),
-                        Integer.parseInt(member.get(5)), member.get(6));
-
-                //bicycles.get(index++) = new List<Bicycle>(AInteger.parseInt(member.get(0)),
-               //         Double.parseDouble(member.get(1)), Integer.parseInt(member.get(2)), member.get(3), member.get(4),
-               //         Integer.parseInt(member.get(5)), member.get(6));
-            }
-            else {
-                // If there is one row that has a missing info for the bicycle, then I print it for myself.
-                //No eed for the user to see this.
-                System.out.println("Row " + i + " does not have all the bicycle information.");
-            }
-        }
+    public void orderByPriceDesc(List<Bicycle> bicycles) {
+        Collections.sort(bicycles, new PriceComparator().reversed());
     }
 
-
+    /**
+     * printAllAlchemyBrandBicyclePrices function checks if the bicycles are not null, then it prints the Alchemy Brand
+     * bicycle prices.
+     * @param bicycles
      */
-        /*
-        for(int i=0;i<bicycles.length;i++){
-            if(bicycles[i] != null && bicycles[i].getBrand().equals("Alchemy")){
-                System.out.println("The price is: " + bicycles[i].getPrice());
+
+    public void printAllAlchemyBrandBicyclePrices(List<Bicycle> bicycles) {
+        int count = 0;
+        for (Bicycle b : bicycles) {
+            if (b != null && b.getBrand().equals("Alchemy")) {
+                System.out.println("The price is: " + b.getPrice());
                 count++;
             }
         }
-        if(count == 0){
+
+        if (count == 0) {
             System.out.println("There are no Alchemy Brand bicycles.");
         }
     }
+
+    /**
+     * prints the bicycles which have high gear.
+     * @param bicycles
+     */
+
+    public void printBicyclesWithHighGear(List<Bicycle> bicycles) {
+        int count = 0;
+        for (Bicycle b : bicycles) {
+            if (b != null && b.getGear().equals("high")) {
+                b.printInfo();
+                System.out.println("*********");
+                count++;
+            }
+        }
+        if (count == 0) {
+            System.out.println("There are no bicycles with high gear.");
+        }
+    }
+
+    /**
+     * maxCadence function returns the bicycles which have maximum cadence. Bicycle class is Comparable and the
+     * compareTo function shows that it's comparing the cadences.
+     * @param bicycles
+     * @return
+     */
+
+    public Bicycle maxCadence(List<Bicycle> bicycles) {
+      /*
+        if(bicycles.get(0) == null) {
+            return null;
+        }
+        Bicycle max = bicycles.get(0);
+        for(int i = 1; i < bicycles.size(); i++){
+            Bicycle b = bicycles.get(i);
+            if(b != null && max.getCadence() <= b.getCadence()){
+                max = b;
+            }
+        }
+        return max;
+       */
+        //   try{
+        return Collections.max(bicycles);
+        //    } catch (NullPointerException e){
+        //       return ;
+        //    }
+    }
+
+    /**
+     * The bicycles are ordered by price in the ascending order.
+     * @param bicycles
+     */
+
+    public void orderByPriceAsc(List<Bicycle> bicycles) {
+
+        Collections.sort(bicycles, new PriceComparator());
+
+        /*
+
+        Bicycle temp;
+        for (int i = 0; i < bicycles.size(); i++){
+            for (int j = 1; j < (bicycles.size() - i); j++) {
+                Bicycle b1 = bicycles.get(j - 1), b2 = bicycles.get(j);
+                if (b1.getPrice() > b2.getPrice()) {
+                    temp = b1;
+                    b1 = b2;
+                    b2 = temp;
+                }
+            }
+        }
+
+        for (Bicycle b:bicycles){
+            System.out.println("*********");
+            b.printInfo();
+        }
+
          */
+    }
+}

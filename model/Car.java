@@ -12,11 +12,11 @@ public abstract class Car extends Vehicle {
      * And inherits the Vehicle: wheelNumber, speed, price, brand and plateNumber.
      */
 
-    private String model;
-    private String color;
-    private int made;
-    private int year;
-    private int mileage;
+    private String model = "BMW";
+    private String color = "blue";
+    private int made = 1990;
+    private int year = 2000;
+    private int mileage = 23;
 
     public Car(String data) {
         super(data.substring(0, data.indexOf(',', 1 + data.indexOf(',', 1 +
@@ -41,11 +41,6 @@ public abstract class Car extends Vehicle {
         setModel(model);
         setColor(color);
         setMade(made);
-        /*
-        if (year < 1900) {
-            throw new IllegalArgumentException();
-        }
-         */
         setYear(year);
         setMileage(mileage);
     }
@@ -119,5 +114,10 @@ public abstract class Car extends Vehicle {
         System.out.println("Made: " + getMade());
         System.out.println("Year: " + getYear());
         System.out.println("Mileage: " + getMileage());
+    }
+
+    @Override
+    public String toString() {
+        return model + "," + color + "," + made + "," + year + "," + mileage;
     }
 }

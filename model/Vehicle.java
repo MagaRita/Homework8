@@ -11,18 +11,18 @@ public abstract class Vehicle {
      *     plateNumber - the car plateNumber (should have 5-8 characters in the string)
      */
 
-    private int wheelNumber;
-    private double speed;
-    private int price;
-    private String brand;
-    private String plateNumber;
+    private int wheelNumber = 4;
+    private double speed = 50.5;
+    private int price = 230000;
+    private String brand = "new";
+    private String plateNumber = "11QA1232";
 
     public Vehicle(int wheelNumber, double speed, int price, String brand, String plateNumber) {
-        this.wheelNumber = wheelNumber;
-        this.speed = speed;
-        this.price = price;
-        this.brand = brand;
-        this.plateNumber = plateNumber;
+        setWheelNumber(wheelNumber);
+        setSpeed(speed);
+        setPrice(price);
+        setBrand(brand);
+        setPlateNumber(plateNumber);
     }
 
     public Vehicle(String data) {

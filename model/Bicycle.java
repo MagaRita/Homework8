@@ -10,25 +10,28 @@ public class Bicycle extends Vehicle implements Comparable<Bicycle>{
      * And inherits the Vehicle: wheelNumber, speed, price, brand and plateNumber.
      */
 
-    private int cadence;
-    private String gear;
+    private int cadence = 100;
+    private String gear = "high";
+
 
     public Bicycle(int wheelNumber, double speed, int price, String brand, String plateNumber,
                    int cadence, String gear) {
         super(wheelNumber, speed, price, brand, plateNumber);
-        this.cadence = cadence;
-        this.gear = gear;
+        setCadence(cadence);
+        setGear(gear);
     }
 
     public Bicycle(String data) {
         super(data.substring(0, data.indexOf(',', 1 + data.indexOf(',', 1 +
-                data.indexOf(',', 1 + data.indexOf(',', 1 + data.indexOf(',')))))));
+                                data.indexOf(',', 1 + data.indexOf(',', 1 +
+                                        data.indexOf(',')))))));
 
         String[] s = data.replace(data.substring(0, data.indexOf(',', 1 +
-                     data.indexOf(',', 1 + data.indexOf(',', 1 +
-                     data.indexOf(',', 1 + data.indexOf(','))))) + 1), "")
-                     .split(",");
-
+                                                    data.indexOf(',', 1 +
+                                                    data.indexOf(',', 1 +
+                                                    data.indexOf(',', 1 +
+                                                    data.indexOf(','))))) + 1), "")
+                                                    .split(",");
         setCadence(Integer.parseInt(s[0]));
         setGear(s[1]);
     }
@@ -86,6 +89,12 @@ public class Bicycle extends Vehicle implements Comparable<Bicycle>{
     public String toString() {
         return super.toString() + "," + cadence + "," + gear;
     }
+
+    /**
+     * Bicycle class is Comparable and compareTo function compares the cadences.
+     * @param o
+     * @return
+     */
 
     @Override
     public int compareTo(Bicycle o) {

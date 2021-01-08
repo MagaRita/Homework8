@@ -1,7 +1,5 @@
 package service;
 
-import model.Bicycle;
-import model.Bus;
 import model.SportsCar;
 
 import java.io.File;
@@ -17,7 +15,18 @@ import static service.FileService.write;
 
 public class SportsCarService {
 
+    /**
+     * In the sportsCar.txt file, the sports car info is saved and that PATH will be used in a few places in the
+     * SportsCarService class.
+     */
+
     public static final String PATH = "C:\\Users\\ACER\\IdeaProjects\\Homework8\\src\\sportsCar.txt";
+
+    /**
+     * convert function converts the List<String> into Sports Cars.
+     * @param data
+     * @return
+     */
 
     private static List<SportsCar> convert(List<String> data) {
         List<SportsCar> sportsCars = new ArrayList<>();
@@ -26,6 +35,12 @@ public class SportsCarService {
         }
         return sportsCars;
     }
+
+    /**
+     * The sports car info is added by the admin.
+     * @param index
+     * @return
+     */
 
     public SportsCar createSportsCar(int index) {
 
@@ -39,13 +54,12 @@ public class SportsCarService {
         wheelNumber = scanner.nextInt();
         String str = wheelNumber + ",";
 
-        String path = "C:\\Users\\ACER\\IdeaProjects\\Homework8\\src\\sportsCar.txt";
         try {
             if (index == 0) {
 
-                Files.write(Paths.get(path), str.getBytes());
+                Files.write(Paths.get(PATH), str.getBytes());
             } else {
-                write(path, str);
+                write(PATH, str);
             }
         } catch (Exception exception) {
             System.out.println("An error occurred.");
@@ -54,44 +68,98 @@ public class SportsCarService {
         }
 
         try {
-            System.out.println("Enter speed:");
-            speed = scanner.nextDouble();
+            while (true) {
+                System.out.println("Enter speed - not a negative number and not 0.");
+                speed = scanner.nextDouble();
+                if (speed > 0) {
+                    break;
+                }
+            }
             str = speed + ",";
-            write(path, str);
-            System.out.println("Enter price:");
-            price = scanner.nextInt();
-            str = price + ",";
-            write(path, str);
-            System.out.println("Enter brand:");
-            brand = scanner.next();
-            str = brand + ",";
-            write(path, str);
-            System.out.println("Enter plateNumber:");
-            plateNumber = scanner.next();
-            str = plateNumber + ",";
-            write(path, str);
-            System.out.println("Enter model:");
-            model = scanner.next();
-            str = model + ",";
-            write(path, str);
-            System.out.println("Enter color:");
-            color = scanner.next();
-            str = color + ",";
-            write(path, str);
-            System.out.println("Enter made:");
-            made = scanner.nextInt();
-            str = made + ",";
-            write(path, str);
-            System.out.println("Enter year:");
-            year = scanner.nextInt();
-            str = year + ",";
-            write(path, str);
-            System.out.println("Enter mileage:");
-            mileage = scanner.nextInt();
-            str = mileage + "\n";
-            write(path, str);
+            write(PATH, str);
 
-            System.out.println("Successfully wrote in the file.");
+            while (true) {
+                System.out.println("Enter price - not a negative number and not 0.");
+                price = scanner.nextInt();
+                if (price > 0) {
+                    break;
+                }
+            }
+
+            str = price + ",";
+            write(PATH, str);
+
+            while (true) {
+                System.out.println("Enter brand - any not empty string.");
+                brand = scanner.next();
+                if (brand.length() > 0) {
+                    break;
+                }
+            }
+
+            str = brand + ",";
+            write(PATH, str);
+
+            while (true) {
+                System.out.println("Enter plate number - should have 5-8 characters in the string.");
+                plateNumber = scanner.next();
+                if(plateNumber.length() >= 5 && plateNumber.length() <= 8)
+                    break;
+            }
+
+            str = plateNumber + ",";
+            write(PATH, str);
+
+            while (true) {
+                System.out.println("Enter model - any not empty string.");
+                model = scanner.next();
+                if(model.length() > 0)
+                    break;
+            }
+
+            str = model + ",";
+            write(PATH, str);
+
+            while (true) {
+                System.out.println("Enter color - any not empty string.");
+                color = scanner.next();
+                if(color.length() > 0)
+                    break;
+            }
+
+            str = color + ",";
+            write(PATH, str);
+
+            while (true) {
+                System.out.println("Enter made - any number in between 1900 and 2020.");
+                made = scanner.nextInt();
+                if (made > 1900 && made < 2020)
+                    break;
+            }
+
+            str = made + ",";
+            write(PATH, str);
+
+            while (true) {
+                System.out.println("Enter year - greater or equal to the year the car was made.");
+                year = scanner.nextInt();
+                if(year >= made)
+                    break;
+            }
+
+            str = year + ",";
+            write(PATH, str);
+
+            while (true) {
+                System.out.println("Enter mileage - any not negative value and not 0.");
+                mileage = scanner.nextInt();
+                if(mileage > 0)
+                    break;
+            }
+
+            str = mileage + "\n";
+            write(PATH, str);
+
         } catch (Exception exception) {
             System.out.println("An error occurred.");
             exception.printStackTrace();
@@ -100,6 +168,167 @@ public class SportsCarService {
         return new SportsCar(wheelNumber, speed, price, brand, plateNumber, model, color, made, year, mileage);
     }
 
+    /**
+     * If there is no sportsCar.txt file, then the user gets the message that there are no sports cars available.
+     * Otherwise, the info from the file is read and sports cars are created with that info.
+     * @return
+     */
+    public List<SportsCar> fillSportsCarInfo() {
+
+        String sportsCarFileName = "sportsCar.txt";
+        List<SportsCar> sportsCars = null;
+
+        if (createFile(sportsCarFileName)) {
+            System.out.println("There are no sports cars available at the moment." +
+                    "\nPlease choose one of the other options or return to the Main Menu.");
+            return null;
+        } else {
+            try {
+                sportsCars = convert(FileService.read(PATH));
+            } catch (Exception e) {
+                System.out.println("An error occurred.");
+                e.printStackTrace();
+            }
+        }
+        return sportsCars;
+    }
+
+    /**
+     * The admin chooses the sports car number, but as the numbers start from 0, the index is one less. If there is no
+     * file with sports cars, then the message will appear. Otherwise, the chosen sports car will be deleted and
+     * the temp file won't contain that sports car and then the temp file will be renamed.
+     * @param sportsCarNumber
+     * @return
+     */
+
+    public List<SportsCar> removeSportsCar(int sportsCarNumber) {
+
+        int index = sportsCarNumber - 1;
+        List<SportsCar> sportsCars = null;
+        if (createFile("sportsCar.txt")) {
+            System.out.println("There are no sports cars available at the moment." +
+                    "\nPlease choose one of the other options or return to the Admin Main Menu.");
+            return null;
+        } else {
+            try {
+                sportsCars = convert(FileService.read(PATH));
+
+                for (int i = 0; i < sportsCars.size(); i++) {
+
+                    if (i == index) {
+                        sportsCars.remove(i);
+                    }
+                }
+                File file = new File("C:\\Users\\ACER\\IdeaProjects\\Homework8\\src\\sportsCar.txt");
+                File temp = File.createTempFile("file3", ".txt", file.getParentFile());
+                for (SportsCar s : sportsCars) {
+                    write(String.valueOf(temp), s.toString());
+                    write(String.valueOf(temp), "\n");
+                }
+                file.delete();
+                temp.renameTo(file);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return  sportsCars;
+    }
+
+    /**
+     * The admin can choose which sports car they need. The admin chooses the sports car number, but as the numbers
+     * start from 0, the index is one less. If the file doesn't exist then the message will appear.
+     * Otherwise, the sports car the admin chose, will be returned.
+     * @param sportsCarNumber
+     * @return
+     */
+
+    public SportsCar chooseSportsCar(int sportsCarNumber){
+
+        int index = sportsCarNumber-1;
+        if (createFile("sportsCar.txt")) {
+            System.out.println("There are no bicycle's available at the moment." +
+                    "\nPlease choose one of the other options or return to the Admin Main Menu.");
+        } else {
+            try {
+                List<SportsCar> sportsCars = convert(FileService.read(PATH));
+                for (int i = 0;i<sportsCars.size();i++){
+                    if(i == index){
+                        return sportsCars.get(i);
+                    }
+                }
+            } catch (Exception e) {
+                System.out.println("An error occurred.");
+                e.printStackTrace();
+            }
+        }
+        return null;
+    }
+
+    /**
+     * The sports cars are ordered by price.
+     * @param sportsCars
+     */
+
+    public void orderByPrice(List<SportsCar> sportsCars) {
+
+        SportsCar temp;
+        for (int i = 0; i < sportsCars.size(); i++) {
+            for (int j = 1; j < (sportsCars.size() - i); j++) {
+                SportsCar s1 = sportsCars.get(j-1),s2 = sportsCars.get(j);
+                if (s1.getPrice() > s2.getPrice()) {
+                    temp = s1;
+                    s1 = s2;
+                    s2 = temp;
+                }
+            }
+        }
+
+        for (SportsCar p : sportsCars) {
+            System.out.println("*********");
+            p.printInfo();
+        }
+    }
+
+    /**
+     * Prints the sports cars which have a price less than 1 million and year more than 2018.
+     * @param sportsCars
+     */
+
+    public void printPriceLessThan1MillionAndYearMoreThan2018SportsCars(List<SportsCar> sportsCars) {
+        int count = 0;
+
+        for (SportsCar p: sportsCars) {
+            if (p != null && p.getPrice() < 1_000_000 && p.getYear() > 2018) {
+                p.printInfo();
+                count++;
+            }
+        }
+
+        if(count == 0){
+            System.out.println("There is no Sports car which has a price less than 1 million " +
+                    "and the year is more than 2018.");
+        }
+    }
+
+    /**
+     * Prints the sports cars color.
+     * @param sportsCars
+     */
+
+    public void printSportsCarColor(List<SportsCar> sportsCars) {
+        int count = 0;
+        for (SportsCar s: sportsCars) {
+            if (s != null) {
+                System.out.println("There is a sports car which has color: " + s.getColor());
+                count++;
+            }
+        }
+        if(count == 0){
+            System.out.println("There are no sports cars.");
+        }
+    }
+    
+    /*
     public SportsCar[] writeOrReadInfoInSportsCarObject() {
 
         String sportsCarFileName = "SportsCar.txt";
@@ -155,168 +384,6 @@ public class SportsCarService {
         }
     }
 
-    /**
-     * The Sports Car info is printed in the printSportsCarInfo function.
-     * @param sportsCars
      */
-
-    public void printSportsCarInfo(SportsCar sportsCars) {
-        if(sportsCars != null) {
-            System.out.println("Wheel number: " + sportsCars.getWheelNumber());
-            System.out.println("Speed: " + sportsCars.getSpeed());
-            System.out.println("Price: " + sportsCars.getPrice());
-            System.out.println("Brand: " + sportsCars.getBrand());
-            System.out.println("Plate Number: " + sportsCars.getPlateNumber());
-            System.out.println("Model: " + sportsCars.getModel());
-            System.out.println("Color: " + sportsCars.getColor());
-            System.out.println("Made: " + sportsCars.getMade());
-            System.out.println("Year: " + sportsCars.getYear());
-            System.out.println("Mileage: " + sportsCars.getMileage());
-        }
-    }
-
-    public void orderByPrice(List<SportsCar> sportsCars) {
-
-        SportsCar temp;
-        for (int i = 0; i < sportsCars.size(); i++) {
-            for (int j = 1; j < (sportsCars.size() - i); j++) {
-                SportsCar s1 = sportsCars.get(j-1),s2 = sportsCars.get(j);
-                if (s1.getPrice() > s2.getPrice()) {
-                    temp = s1;
-                    s1 = s2;
-                    s2 = temp;
-                }
-            }
-        }
-
-        for (SportsCar p : sportsCars) {
-            System.out.println("*********");
-            printSportsCarInfo(p);
-        }
-    }
-
-    /*
-    public void printSportCarsColor(SportsCar[] sportsCars) {
-        int count = 0;
-        for (int i = 0; i < sportsCars.length; i++) {
-            if (sportsCars[i] != null && sportsCars[i].getType() == 's') {
-                System.out.println("There is a sport car which has color: " + sportsCars[i].getColor());
-                count++;
-            }
-        }
-        if(count == 0){
-            System.out.println("There are no sport cars.");
-        }
-    }
-
-     */
-
-    public void printPriceLessThan1MillionAndYearMoreThan2018SportsCars(List<SportsCar> sportsCars) {
-        int count = 0;
-
-        for (SportsCar p: sportsCars) {
-            if (p != null && p.getPrice() < 1_000_000 && p.getYear() > 2018) {
-                printSportsCarInfo(p);
-                count++;
-            }
-        }
-
-        /*
-        for (int i = 0; i < sportsCars.length; i++) {
-            if (sportsCars[i] != null && sportsCars[i].getPrice() < 1_000_000 && sportsCars[i].getYear() > 2018) {
-                printSportsCarInfo(personalCars[i]);
-                count++;
-            }
-        }
-
-         */
-        if(count == 0){
-            System.out.println("There is no Sports car which has a price less than 1 million " +
-                    "and the year is more than 2018.");
-        }
-    }
-
-    public List<SportsCar> removeSportsCar(int sportsCarNumber) {
-
-        int index = sportsCarNumber - 1;
-        List<SportsCar> sportsCars = null;
-        if (createFile("sportsCar.txt")) {
-            System.out.println("There are no sports cars available at the moment." +
-                    "\nPlease choose one of the other options or return to the Admin Main Menu.");
-            return null;
-        } else {
-            try {
-                sportsCars = convert(FileService.read(PATH));
-
-                for (int i = 0; i < sportsCars.size(); i++) {
-
-                    if (i == index) {
-                        sportsCars.remove(i);
-                    }
-                }
-                File file = new File("C:\\Users\\ACER\\IdeaProjects\\Homework8\\src\\sportsCar.txt");
-                File temp = File.createTempFile("file3", ".txt", file.getParentFile());
-                for (SportsCar s : sportsCars) {
-                    write(String.valueOf(temp), s.toString());
-                    write(String.valueOf(temp), "\n");
-                }
-                file.delete();
-                temp.renameTo(file);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        return  sportsCars;
-    }
-
-    public SportsCar chooseSportsCar(int sportsCarNumber){
-
-        int index = sportsCarNumber-1;
-        if (createFile("sportsCar.txt")) {
-            System.out.println("There are no bicycle's available at the moment." +
-                    "\nPlease choose one of the other options or return to the Admin Main Menu.");
-        } else {
-            try {
-                List<SportsCar> sportsCars = convert(FileService.read(PATH));
-                for (int i = 0;i<sportsCars.size();i++){
-                    if(i == index){
-                        return sportsCars.get(i);
-                    }
-                }
-            } catch (Exception e) {
-                System.out.println("An error occurred.");
-                e.printStackTrace();
-            }
-        }
-        return null;
-    }
-
-    /**
-     * If there is no bicycle.txt file, then the user gets the message that there are no bicycles available.
-     * Otherwise, the info from the file is read and bicycles are created with that info.
-     *
-     * @return
-     */
-    public List<SportsCar> fillSportsCarInfo() {
-
-        String sportsCarFileName = "sportsCar.txt";
-        List<SportsCar> sportsCars = null;
-
-        if (createFile(sportsCarFileName)) {
-            System.out.println("There are no sports cars available at the moment." +
-                    "\nPlease choose one of the other options or return to the Main Menu.");
-            return null;
-        } else {
-            try {
-                sportsCars = convert(FileService.read(PATH));
-            } catch (Exception e) {
-                System.out.println("An error occurred.");
-                e.printStackTrace();
-            }
-
-            System.out.println("-----------------------");
-        }
-        return sportsCars;
-    }
 }
 

@@ -10,7 +10,6 @@ public class Bus extends Vehicle {
      * And inherits Vehicle:  wheelNumber, speed, price, brand and plateNumber.
      */
 
-
     /**
      * The bus standard price is set to 100.
      */
@@ -18,33 +17,28 @@ public class Bus extends Vehicle {
     public static final int STANDARD_PRICE_BUS = 100;
 
     private boolean isWorking;
-    private String route;
-    private double routeTime;
+    private String route = "Komitas";
+    private double routeTime = 2;
 
     public Bus(int wheelNumber, double speed, int price, String brand, String plateNumber, boolean isWorking, String route,
                double routeTime) {
         super(wheelNumber, speed, price, brand, plateNumber);
-        this.isWorking = isWorking;
+        setWorking(isWorking);
         setRoute(route);
         setRouteTime(routeTime);
     }
 
-    public Bus(){
-        super(4, 60, 100, "Krystal Shuttle Bus", "11OB1283");
-        this.isWorking = true;
-        this.route = "Komitas";
-        this.routeTime = 2;
-    }
-
     public Bus(String data) {
         super(data.substring(0, data.indexOf(',', 1 + data.indexOf(',', 1 +
-                data.indexOf(',', 1 + data.indexOf(',', 1 + data.indexOf(',')))))));
+                                data.indexOf(',', 1 + data.indexOf(',', 1 +
+                                data.indexOf(',')))))));
 
         String[] s = data.replace(data.substring(0, data.indexOf(',', 1 +
-                data.indexOf(',', 1 + data.indexOf(',', 1 +
-                        data.indexOf(',', 1 + data.indexOf(','))))) + 1), "")
-                .split(",");
-
+                                                    data.indexOf(',', 1 +
+                                                    data.indexOf(',', 1 +
+                                                    data.indexOf(',', 1 +
+                                                    data.indexOf(','))))) + 1), "")
+                                                    .split(",");
         setWorking(Boolean.parseBoolean(s[0]));
         setRoute(s[1]);
         setRouteTime(Double.parseDouble(s[2]));
@@ -54,7 +48,8 @@ public class Bus extends Vehicle {
     }
 
     public void setWorking(boolean working) {
-        isWorking = working;
+        if(String.valueOf(isWorking).equals("true") || String.valueOf(isWorking).equals("false"))
+            isWorking = working;
     }
 
     public String getRoute() {
@@ -94,5 +89,10 @@ public class Bus extends Vehicle {
         System.out.println("The bus is working: " + (isWorking()?"Yes":"No"));
         System.out.println("Route: " + getRoute());
         System.out.println("Route time: " + getRouteTime());
+    }
+
+    @Override
+    public String toString() {
+        return isWorking + "," + route + "," + routeTime;
     }
 }

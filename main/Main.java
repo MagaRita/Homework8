@@ -7,6 +7,11 @@ import java.util.*;
 
 public class Main {
 
+    /**
+     * After the admin deletes one of the bicycles, family cars, sports cars, buses or taxi's, the new info will be
+     * written in these variables.
+     */
+
     static List<Bicycle> newBicycles = null;
     static List<FamilyCar> newFamilyCar = null;
     static List<SportsCar> newSportsCar = null;
@@ -14,6 +19,11 @@ public class Main {
     static List<Taxi> newTaxi = null;
 
     public static void main(String[] args) {
+
+        /**
+         * Firstly, let's check whether the files exist and fill the bicycle, family car, sports car, bus
+         * and taxi info.
+         */
 
         BicycleService bicycleService = new BicycleService();
         List<Bicycle> bicycles = bicycleService.fillBicycleInfo();
@@ -25,56 +35,6 @@ public class Main {
         List<Bus> bus = busService.fillBusInfo();
         TaxiService taxiService = new TaxiService();
         List<Taxi> taxi = taxiService.fillTaxiInfo();
-
-        /*
-        Vehicle vehicle = new Vehicle(2, 50, 1000, "Arch", "11GH1231") {
-            @Override
-            public void horn() {
-                System.out.println("The horn is a honk");
-            }
-        };
-
-        System.out.println(vehicle);
-
-        Bicycle bicycle2 = new Bicycle(2, 50, 1000, "Arch", "11GH1231", 100,
-        "high");
-        System.out.println(bicycle2);
-
-         */
-
-             /*
-
-        System.out.println("Now, let's check if the files for bicycle, personal car, bus and taxi exist.\n" +
-                "If they don't exist, we will write ourselves.\n");
-
-
-        if(bicycles.length == 0 || personalCars.length == 0 || bus.length == 0 ||
-                taxi.length == 0){
-            System.out.println("Something is missing in the bicycle, personal car, bus or taxi info.\nPlease provide all " +
-                    "the info and run the program again.");
-            System.exit(0);
-        }
-
-        System.out.println("\nLet's firstly check what the taxi horn sounds like.");
-        //Polymorphism
-        PublicCar pObj = new Taxi();
-        //pObj.horn();
-        pObj = new Bus();
-        //pObj.horn();
-
-        function(pObj);
-        function(new Taxi());
-
-    }
-
-    private static void function(PublicCar p){
-        if(p instanceof Taxi){
-            Taxi tObj = (Taxi) p;
-
-            tObj.horn();
-        }
-
-         */
 
         /**
          * The user should either login or register in order to see the information.
@@ -285,10 +245,15 @@ public class Main {
                 }
             }
         } else {
+
+            /**
+             * Now, the user is logged in.
+             */
             while (true) {
 
                 /**
                  * The user is provided with the Main Menu Options, whether to buy a vehicle or use the services.
+                 * If none of those are chosen, the user will be logged out and the program will end.
                  */
                 int command1 = mainMenuOptions();
                 if (command1 == 1) {
@@ -299,30 +264,67 @@ public class Main {
                      */
                     boolean loops = true;
                     while (loops) {
+
+                        /**
+                         * The user is provided with the Buying a Vehicle Menu, whether they would like to buy a
+                         * bicycle or a car. If none of those are chosen, the user will be redirected to the Main Menu.
+                         */
+
                         int[] array = buyingMenuOptions();
                         //The user chose either to buy a bicycle or a car.
                         int command2 = array[0];
-                        //Shows whether to go to Main Menu or stay in the Menu2.
+                        //Shows whether to go to Main Menu or stay in the Buying a Vehicle Menu.
                         loops = (array[1] == 0) ? false : true;
 
                         if (command2 == 1 && bicycles != null) {
+
+                            /**
+                             * When the user chooses the bicycle, they will be redirected to the Bicycle Menu
+                             * where they can see different options to choose from. If none of those are chosen,
+                             * the user will be redirected to the Buying a Vehicle Menu.
+                             */
+
                             boolean loop1 = true;
                             while (loop1) {
                                 loop1 = bicycleMenuOptions(bicycles);
                             }
                         } else if (command2 == 2) {
 
+                            /**
+                             * When the user chooses the car, they will be redirected to the Car Menu
+                             * where they can choose the family car or the sports car. If none of those are chosen,
+                             * the user will be redirected to the Buying a Vehicle Menu.
+                             */
+
                             boolean loop1 = true;
                             while (loop1) {
                                 int[] arr = carMenuOptions();
+                                //This shows whether the user chose the family car or the sports car.
                                 int command3 = arr[0];
+                                //This shows whether the user wants to redirect to the Buying a Vehicle Menu or not.
                                 loop1 = (arr[1] == 0) ? false : true;
                                 if (command3 == 1) {
+
+                                    /**
+                                     * When the user chooses the family car, they will be redirected to the Family
+                                     * Car Menu where they can choose from the options provided.
+                                     * If none of those options are chosen, the user will be redirected to the
+                                     * Car Menu.
+                                     */
+
                                     boolean loop2 = true;
                                     while (loop2) {
                                         loop2 = familyCarMenuOptions(familyCars);
                                     }
                                 } else if (command3 == 2) {
+
+                                    /**
+                                     * When the user chooses the sports car, they will be redirected to the Sports
+                                     * Car Menu where they can choose from the options provided.
+                                     * If none of those options are chosen, the user will be redirected to the
+                                     * Car Menu.
+                                     */
+
                                     boolean loop2 = true;
                                     while (loop2) {
                                         loop2 = sportsCarMenuOptions(sportsCars);
@@ -332,6 +334,13 @@ public class Main {
                         }
                     }
                 } else if (command1 == 2) {
+
+                    /**
+                     * The user chose to use the services offered. Thus, they will see the Public Transportation Menu
+                     * from which they can choose the bus or the taxi. If none of those options are chosen, the user
+                     * will be redirected to the Main Menu.
+                     */
+
                     boolean loop1 = true;
                     while (loop1) {
                         int[] array = publicTransportationMenuOptions();
@@ -339,11 +348,23 @@ public class Main {
                         loop1 = (array[1] == 0) ? false : true;
 
                         if (command2 == 1) {
+
+                            /**
+                             * When the user chooses the bus, the bus options are provided.  If none of those options
+                             * are chosen, the user will be redirected to the Public Transportation Menu.
+                             */
+
                             boolean loop2 = true;
                             while (loop2) {
                                 loop2 = busMenuOptions(bus);
                             }
                         } else if (command2 == 2) {
+
+                            /**
+                             * When the user chooses the taxi, the taxi options are provided. If none of those options
+                             * are chosen, the user will be redirected to the Public Transportation Menu.
+                             */
+
                             boolean loop2 = true;
                             while (loop2) {
                                 loop2 = taxiMenuOptions(taxi);
@@ -383,16 +404,16 @@ public class Main {
                 //The program will end.
                 System.exit(0);
         }
-
         return command;
     }
 
     /**
      * The admin can choose which options they are interested in from the Vehicle Main Menu (1-5) and when typing smth
      * else, the admin will be redirected to the Admin Main Menu. vehicleMenuOptions returns the command the admin
-     * typed and a boolean showing whether smth else was typed instead of 1-5.
+     * typed and a boolean showing whether smth else was typed instead of 1-5 or not.
      * @return
      */
+
     private static int[] vehicleMenuOptions(){
         boolean loop = true;
         int[] arr = new int[2];
@@ -458,12 +479,16 @@ public class Main {
         int command = ss.nextInt();
         Scanner scanner = new Scanner(System.in);
 
+        /**
+         * This is the case when one of the bicycles is deleted, then the new bicycle info should be assigned to the
+         * current bicycle.
+         */
+
         if(newBicycles != null)
             bicycles = newBicycles;
 
         switch (command) {
             case 1:
-
                 System.out.println("You have chosen 1: here are all the bicycles info.");
                 for (Bicycle b:bicycles) {
                     if(b != null) {
@@ -510,6 +535,7 @@ public class Main {
                  * Here the admin can update the bicycle info. Choose which bicycle should be updated and
                  * which info specifically.
                  */
+                
                 System.out.println("You have chosen 4: you can update the bicycle info:");
                 System.out.println("Choose which bicycle info you would like to change: ");
                 bicycleNumber = scanner.nextInt();
@@ -606,12 +632,16 @@ public class Main {
         int command = ss.nextInt();
         Scanner scanner = new Scanner(System.in);
 
+        /**
+         * This is the case when one of the family cars is deleted, then the new family car info should be assigned
+         * to the current family car.
+         */
+
         if(newFamilyCar != null)
             familyCars = newFamilyCar;
 
         switch (command) {
             case 1:
-
                 System.out.println("You have chosen 1: here is all the family car info.");
                 for (FamilyCar f:familyCars) {
                     if(f != null) {
@@ -644,6 +674,7 @@ public class Main {
                 /**
                  * addFamilyCar function adds a new family car to the file (the admin bought new ones).
                  */
+
                 System.out.println("You have chosen 3: you can add a new family car:");
 
                 if(familyCars == null)
@@ -658,6 +689,7 @@ public class Main {
                  * Here the admin can update the family car info. Choose which family car should be updated and
                  * which info specifically.
                  */
+
                 System.out.println("You have chosen 4: you can update the family car info:");
                 System.out.println("Choose which family car info you would like to change: ");
                 familyCarNumber = scanner.nextInt();
@@ -724,6 +756,7 @@ public class Main {
                     }
                 }
                 else
+
                 /**
                  * If the admin typed an incorrect family car number from the list, then they will get this message.
                  */
@@ -771,12 +804,16 @@ public class Main {
         int command = ss.nextInt();
         Scanner scanner = new Scanner(System.in);
 
+        /**
+         * This is the case when one of the sports cars is deleted, then the new sports car info should be assigned
+         * to the current sports car.
+         */
+
         if(newSportsCar != null)
             sportsCars = newSportsCar;
 
         switch (command) {
             case 1:
-
                 System.out.println("You have chosen 1: here is all the sports car info.");
                 for (SportsCar s:sportsCars) {
                     if(s != null) {
@@ -823,6 +860,7 @@ public class Main {
                  * Here the admin can update the sports car info. Choose which sports car should be updated and
                  * which info specifically.
                  */
+
                 System.out.println("You have chosen 4: you can update the sports car info:");
                 System.out.println("Choose which sports car info you would like to change: ");
                 sportsCarNumber = scanner.nextInt();
@@ -932,6 +970,11 @@ public class Main {
         int command = ss.nextInt();
         Scanner scanner = new Scanner(System.in);
 
+        /**
+         * This is the case when one of the buses is deleted, then the new bus info should be assigned to the
+         * current bus.
+         */
+
         if(newBus != null)
             bus = newBus;
 
@@ -970,6 +1013,7 @@ public class Main {
                 /**
                  * addBus function adds a new bus to the file (the admin bought new ones).
                  */
+
                 System.out.println("You have chosen 3: you can add a new bus:");
 
                 if(bus == null)
@@ -984,6 +1028,7 @@ public class Main {
                  * Here the admin can update the bus info. Choose which bus should be updated and
                  * which info specifically.
                  */
+
                 System.out.println("You have chosen 4: you can update the bus info:");
                 System.out.println("Choose which bus info you would like to change: ");
                 busNumber = scanner.nextInt();
@@ -1084,6 +1129,11 @@ public class Main {
         Scanner ss = new Scanner(System.in);
         int command = ss.nextInt();
         Scanner scanner = new Scanner(System.in);
+
+        /**
+         * This is the case when one of the taxi's is deleted, then the new taxi info should be assigned to the
+         * current taxi.
+         */
 
         if(newTaxi != null)
             taxi = newTaxi;
@@ -1234,9 +1284,6 @@ public class Main {
         return  loop;
     }
 
-
-
-
     /**
      * The user can type 1 to buy a vehicle, 2 to choose one of the services or any other integer to exit the menu and
      * log out immediately.
@@ -1270,7 +1317,7 @@ public class Main {
     }
 
     /**
-     * The user can type 1 to buy a bicycle, 2 to buy a car or any other integer to go to Menu1.
+     * The user can type 1 to buy a bicycle, 2 to buy a car or any other integer to go to the Main Menu.
      * @return
      */
 
@@ -1312,7 +1359,8 @@ public class Main {
     }
 
     /**
-     * The bicycleMenuOptions function provides the Bicycle Menu for the user to choose from.
+     * The bicycleMenuOptions function provides the Bicycle Menu for the user to choose from. If none of the options
+     * are chosen, the user will be redirected to the Buying a Vehicle Menu.
      * @param bicycles
      * @return
      */
@@ -1406,13 +1454,15 @@ public class Main {
             case 6:
 
                 /**
-                 * orderByPrice function orders the bicycles by price  in the descending order.
+                 * orderByPrice function orders the bicycles by price in the descending order.
                  */
 
                 System.out.println("You have chosen 6: the bicycles are in descending ordered by price.");
-                bicycleService.orderByPriceDesc(bicycles);
-                for (Bicycle b:bicycles)
-                    System.out.println(b);
+                if(bicycles != null) {
+                    bicycleService.orderByPriceDesc(bicycles);
+                    for (Bicycle b : bicycles)
+                        System.out.println(b);
+                }
                 System.out.println();
                 break;
             default:
@@ -1427,6 +1477,12 @@ public class Main {
         }
         return  loop;
     }
+
+    /**
+     * The carMenuOptions function provides the Car Menu where the user can choose the Family Car or the Sport Car.
+     * If none of the options are chosen, the user will be redirected to the Buying a Vehicle Menu.
+     * @return
+     */
 
     private static int[] carMenuOptions(){
         boolean loop1 = true;
@@ -1460,6 +1516,13 @@ public class Main {
         return arr;
     }
 
+    /**
+     * The familyCarMenuOptions function provides the Family Car Menu for the user to choose from. If none of the
+     * options are chosen, the user will be redirected to the Car Menu.
+     * @param familyCars
+     * @return
+     */
+
     private static boolean familyCarMenuOptions(List<FamilyCar> familyCars){
         boolean loop = true;
         FamilyCarService familyCarService = new FamilyCarService();
@@ -1490,6 +1553,10 @@ public class Main {
                 System.out.println();
                 break;
             case 2:
+
+                /**
+                 * The family car is ordered by price.
+                 */
                 System.out.println("You have chosen 2: the family cars are ordered by price.");
                 familyCarService.orderByPrice(familyCars);
                 System.out.println();
@@ -1499,15 +1566,24 @@ public class Main {
                 System.out.println();
                 break;
             case 3:
-                System.out.println("You have chosen 3: the family cars colors are as follows.");
-                familyCarService.printSportCarsColor(familyCars);
+                /**
+                 * Provides all the family car colors.
+                 */
+                System.out.println("You have chosen 3: the family car colors are as follows.");
+                familyCarService.printFamilyCarColor(familyCars);
                 break;
             case 4:
+                /**
+                 * Provides the family cars which have price less than 1 million and year more than 2018.
+                 */
                 System.out.println("You have chosen 4: the family cars which have price less than 1 million and " +
                         "year more than 2018.");
                 familyCarService.printPriceLessThan1MillionAndYearMoreThan2018FamilyCars(familyCars);
                 break;
             default:
+                /**
+                 * When none of the above are chosen, the user will be redirected to the Car Menu.
+                 */
                 System.out.println("You didn't choose any of the numbers above, " +
                         "so you will be redirected to the Car Menu.");
                 System.out.println();
@@ -1515,6 +1591,13 @@ public class Main {
         }
         return loop;
     }
+
+    /**
+     * The sportsCarMenuOptions function provides the Sports Car Menu for the user to choose from. If none of the
+     * options are chosen, the user will be redirected to the Car Menu.
+     * @param sportsCars
+     * @return
+     */
 
     private static boolean sportsCarMenuOptions(List<SportsCar> sportsCars){
         boolean loop = true;
@@ -1536,16 +1619,26 @@ public class Main {
 
         switch (command) {
             case 1:
+
+                /**
+                 * Provides the full list of the sports cars.
+                 */
+
                 System.out.println("You have chosen 1: all the sports car info.");
                 for (SportsCar s:sportsCars) {
                     if(s != null){
-                        sportsCarService.printSportsCarInfo(s);
+                        s.printInfo();
                         System.out.println("-----------------------");
                     }
                 }
                 System.out.println();
                 break;
             case 2:
+
+                /**
+                 * The sports cars are ordered by price.
+                 */
+
                 System.out.println("You have chosen 2: the sports cars are ordered by price.");
                 sportsCarService.orderByPrice(sportsCars);
                 System.out.println();
@@ -1555,10 +1648,20 @@ public class Main {
                 System.out.println();
                 break;
             case 3:
-                System.out.println("You have chosen 3: the sports cars colors are as follows.");
-             //   sportsCarService.printSportCarsColor(sportsCars);
+
+                /**
+                 * The sports car colors are provided.
+                 */
+
+                System.out.println("You have chosen 3: the sports car colors are as follows.");
+                sportsCarService.printSportsCarColor(sportsCars);
                 break;
             case 4:
+
+                /**
+                 * Provides the sports cars which have price less than 1 million and year more than 2018.
+                 */
+
                 System.out.println("You have chosen 4: the sports cars which have price less than 1 million and " +
                         "year more than 2018.");
                 sportsCarService.printPriceLessThan1MillionAndYearMoreThan2018SportsCars(sportsCars);
@@ -1571,6 +1674,12 @@ public class Main {
         }
         return loop;
     }
+
+    /**
+     * The publicTransportationMenuOptions function provides the Public Transportation Menu where the user can
+     * choose bus or taxi options. If none of the options are chosen, the user will be redirected to the Main Menu.
+     * @return
+     */
 
     private static int[] publicTransportationMenuOptions(){
         boolean loop = true;
@@ -1589,14 +1698,29 @@ public class Main {
 
         switch (command3) {
             case 1:
+
+                /**
+                 * The user chose the bus.
+                 */
+
                 System.out.println("You have chosen 1: the bus.");
                 System.out.println();
                 break;
             case 2:
+
+                /**
+                 * The user chose the taxi.
+                 */
+
                 System.out.println("You have chosen 2: the taxi.");
                 System.out.println();
                 break;
             default:
+
+                /**
+                 * The user didn't choose the above options and thus will be redirected to the Main Menu.
+                 */
+
                 System.out.println("You didn't choose the numbers above, " +
                         "so you will be redirected to the Main Menu.");
                 System.out.println();
@@ -1607,6 +1731,12 @@ public class Main {
         return array;
     }
 
+    /**
+     * The busMenuOptions function provides the Bus Menu where the user can choose one of the options provided.
+     * If none of the options are chosen, the user will be redirected to the Public Transportation Menu.
+     * @return
+     */
+
     private static boolean busMenuOptions(List<Bus> bus){
         boolean loop3 = true;
         BusService busService = new BusService();
@@ -1616,8 +1746,7 @@ public class Main {
         System.out.println("Choose one of the options below: ");
         System.out.println("1. Type 1 for printing all the bus information.");
         System.out.println("2. Type 2 to print all the working buses with route Komitas.");
-        System.out.println("3. Type 3 to print the newer bus info.");
-        System.out.println("4. Type any other number to redirect to Public Transportation Menu.");
+        System.out.println("3. Type any other number to redirect to Public Transportation Menu.");
         System.out.println("-----------------------");
 
         Scanner ss = new Scanner(System.in);
@@ -1625,6 +1754,11 @@ public class Main {
 
         switch (command4) {
             case 1:
+
+                /**
+                 * Provides all the bus info.
+                 */
+
                 System.out.println("You have chosen 1: all the bus info.");
                 for (Bus b:bus) {
                     if(b != null) {
@@ -1635,6 +1769,11 @@ public class Main {
                 System.out.println();
                 break;
             case 2:
+
+                /**
+                 * Provides all the working buses with route Komitas.
+                 */
+
                 System.out.println("You have chosen 2: all the working buses with route Komitas.");
                 busService.printWorkingBusesWithRouteKomitas(bus);
                 System.out.println();
@@ -1643,11 +1782,12 @@ public class Main {
                 }
                 System.out.println();
                 break;
-            case 3:
-                System.out.println("You have chosen 3: the newer bus info.");
-             //   busService.printNewerBusInfo(bus);
-                break;
             default:
+
+                /**
+                 * The user will be redirected to the Public Transportation Menu.
+                 */
+
                 System.out.println("You didn't choose any of the numbers above, " +
                         "so you will be redirected to Public Transportation Menu.");
                 System.out.println();
@@ -1656,6 +1796,12 @@ public class Main {
         return loop3;
     }
 
+    /**
+     * The taxiMenuOptions function provides the Taxi Menu where the user can choose one of the options provided.
+     * If none of the options are chosen, the user will be redirected to the Public Transportation Menu.
+     * @param taxi
+     * @return
+     */
     private static boolean taxiMenuOptions(List<Taxi> taxi){
 
         boolean loop3 = true;
@@ -1674,6 +1820,11 @@ public class Main {
 
         switch (command4) {
             case 1:
+
+                /**
+                 * Provides the bus info.
+                 */
+
                 System.out.println("You have chosen 1: all the bus info.");
                 for (Taxi t : taxi) {
                     if(t != null) {
@@ -1684,6 +1835,11 @@ public class Main {
                 System.out.println();
                 break;
             case 2:
+
+                /**
+                 * Finds taxi for the user.
+                 */
+
                 System.out.println("You have chosen 2: we will find a taxi for you.");
                 if (taxiService.findTaxi(taxi, "Komitas 1", "Tashir poxoc", 100)) {
                     System.out.println("We found a taxi for you.");
@@ -1704,4 +1860,54 @@ public class Main {
         }
         return loop3;
     }
+
+      /*
+        Vehicle vehicle = new Vehicle(2, 50, 1000, "Arch", "11GH1231") {
+            @Override
+            public void horn() {
+                System.out.println("The horn is a honk");
+            }
+        };
+
+        System.out.println(vehicle);
+
+        Bicycle bicycle2 = new Bicycle(2, 50, 1000, "Arch", "11GH1231", 100,
+        "high");
+        System.out.println(bicycle2);
+
+         */
+
+             /*
+
+        System.out.println("Now, let's check if the files for bicycle, personal car, bus and taxi exist.\n" +
+                "If they don't exist, we will write ourselves.\n");
+
+
+        if(bicycles.length == 0 || personalCars.length == 0 || bus.length == 0 ||
+                taxi.length == 0){
+            System.out.println("Something is missing in the bicycle, personal car, bus or taxi info.\nPlease provide all " +
+                    "the info and run the program again.");
+            System.exit(0);
+        }
+
+        System.out.println("\nLet's firstly check what the taxi horn sounds like.");
+        //Polymorphism
+        PublicCar pObj = new Taxi();
+        //pObj.horn();
+        pObj = new Bus();
+        //pObj.horn();
+
+        function(pObj);
+        function(new Taxi());
+
+    }
+
+    private static void function(PublicCar p){
+        if(p instanceof Taxi){
+            Taxi tObj = (Taxi) p;
+
+            tObj.horn();
+        }
+
+         */
 }

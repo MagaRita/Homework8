@@ -15,6 +15,7 @@ public class FileService {
      * @return
      * @throws IOException
      */
+
     static List<String> read(String path) throws IOException {
         return Files.readAllLines(Paths.get(path));
     }
@@ -25,6 +26,7 @@ public class FileService {
      * @param text
      * @throws IOException
      */
+
     public static void write(String path, String text) throws IOException {
         Files.write(Paths.get(path), text.getBytes(), StandardOpenOption.APPEND);
     }
@@ -41,9 +43,9 @@ public class FileService {
             File file = new File("C:\\Users\\ACER\\IdeaProjects\\Homework8\\src\\" + fileName);
             if (file.createNewFile()) {
                 // This is to check if it works fine.
-                 System.out.println("The following file has been created: " + file.getName());
+              //   System.out.println("The following file has been created: " + file.getName());
             } else {
-                 System.out.println("File already exists.");
+               //  System.out.println("File already exists.");
                 return false;
             }
         } catch (IOException e) {
