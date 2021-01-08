@@ -179,8 +179,7 @@ public class SportsCarService {
         List<SportsCar> sportsCars = null;
 
         if (createFile(sportsCarFileName)) {
-            System.out.println("There are no sports cars available at the moment." +
-                    "\nPlease choose one of the other options or return to the Main Menu.");
+            System.out.println("There are no sports cars available at the moment.");
             return null;
         } else {
             try {

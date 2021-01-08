@@ -63,6 +63,6 @@ public class FamilyCar extends Car {
 
     @Override
     public String toString() {
-        return String.valueOf(type);
+        return super.toString() + "," + String.valueOf(type);
     }
 }

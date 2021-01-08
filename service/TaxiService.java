@@ -212,8 +212,7 @@ public class TaxiService {
         List<Taxi> taxi = null;
 
         if (createFile(taxiFileName)) {
-            System.out.println("There are no taxi's available at the moment." +
-                    "\nPlease choose one of the other options or return to the Main Menu.");
+            System.out.println("There are no taxi's available at the moment.");
             return null;
         } else {
             try {

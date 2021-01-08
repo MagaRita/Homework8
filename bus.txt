@@ -1,4 +1,4 @@
-4,30.0,30000,BraunAbility,11AQ1001,true,Komitas,2
-4,40.0,30000,Krystal,12AP1002,false,Xanjyan,3
-4,100.0,500000,BraunAbility,13AA1001,true,Manument,1
-4,30.0,400000,McSweeney,14AA1001,true,Komitas,2
+4,30,20000,Audi,12AA1232,true,Komitas,3
+4,40,30000,Audi,32KH2312,false,Xanjyan,2
+4,50,20000,Audi,43HS2312,true,Komitas,1
+4,60,1000000,Audi,12AQ4321,false,Komitas,2

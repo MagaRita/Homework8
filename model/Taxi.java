@@ -117,6 +117,6 @@ public class Taxi extends Car {
 
     @Override
     public String toString() {
-        return driverName + "," + rating + "," + isAvailable;
+        return super.toString() + "," + driverName + "," + rating + "," + isAvailable;
     }
 }

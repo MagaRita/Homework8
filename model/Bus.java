@@ -93,6 +93,6 @@ public class Bus extends Vehicle {
 
     @Override
     public String toString() {
-        return isWorking + "," + route + "," + routeTime;
+        return super.toString() + "," + isWorking + "," + route + "," + routeTime;
     }
 }

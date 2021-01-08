@@ -118,6 +118,6 @@ public abstract class Car extends Vehicle {
 
     @Override
     public String toString() {
-        return model + "," + color + "," + made + "," + year + "," + mileage;
+        return super.toString() + "," + model + "," + color + "," + made + "," + year + "," + mileage;
     }
 }

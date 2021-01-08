@@ -37,6 +37,28 @@ public class Main {
         List<Taxi> taxi = taxiService.fillTaxiInfo();
 
         /**
+         * If the files don't exist from the beginning of the program then there is no info and the program will end.
+         * Let's assume that no one can login or register when there is no info and the program will end.
+         */
+
+        if( bicycles ==null || familyCars == null || sportsCars == null|| bus == null || taxi == null) {
+            System.out.println("There is no database related to the vehicles, thus the program will exit.");
+            System.exit(0);
+        }
+
+        /**
+         * If the files are empty then there is no info and the program will end. Let's assume that no one can
+         * login or register when there is no info and the program will end.
+         */
+
+        if( bicycles.size() == 0 || familyCars.size() == 0  || sportsCars.size() == 0 ||
+                bus.size() == 0  || taxi.size() == 0) {
+            System.out.println("Something is missing in the bicycle, family car, sports car, bus or taxi info." +
+                    "\nPlease provide all the info and run the program again.");
+            System.exit(0);
+        }
+
+        /**
          * The user should either login or register in order to see the information.
          * There is a possibility to login as an admin or a user.
          */
@@ -140,7 +162,7 @@ public class Main {
         /**
          * Now the user can choose from the menu.
          * If the user is logged in as an admin, the Admin Main Menu will open where the admin can see the user list
-         * and can add/remove vehicles from the database (in our case files) or make updates.
+         * and can add/remove vehicles from the database (in our case files).
          * Otherwise, if the user is logged in, then the Main Menu will open where the registered user can choose
          * whether they would like to buy a vehicle or use the services offered.
          */
@@ -172,7 +194,7 @@ public class Main {
                 } else if (command1 == 2) {
 
                     /**
-                     * The admin chose to add/remove or update a vehicle info. To do so, the admin enters the Vehicle
+                     * The admin chose to add/remove a vehicle info. To do so, the admin enters the Vehicle
                      * Main Menu.
                      */
 
@@ -377,7 +399,7 @@ public class Main {
     }
 
     /**
-     * The admin can type 1 to see the full list of registered users, 2 to add/remove or update a vehicle info
+     * The admin can type 1 to see the full list of registered users, 2 to add/remove a vehicle info
      * or any other integer to exit the menu and log out immediately.
      * @return
      */
@@ -388,7 +410,7 @@ public class Main {
         System.out.println("----Admin Main Menu----");
         System.out.println("As an admin, you can view all the user list or add/remove vehicles.");
         System.out.println("1. Type 1 to view the registered users list.");
-        System.out.println("2. Type 2 to add/remove or update a vehicle info.");
+        System.out.println("2. Type 2 to add/remove a vehicle info.");
         System.out.println("3. Type any other number to Exit the admin menu and log out.");
 
         int command = ss.nextInt();
@@ -397,7 +419,7 @@ public class Main {
                 System.out.println("You have chosen to view the registered users list.");
                 break;
             case 2:
-                System.out.println("You have chosen to  add/remove or update a vehicle info.");
+                System.out.println("You have chosen to  add/remove a vehicle info.");
                 break;
             default:
                 System.out.println("You have exited the Admin Main Menu and you are logged out.");
@@ -439,12 +461,15 @@ public class Main {
                 break;
             case 3:
                 System.out.println("You have chosen the sports car.");
+                break;
             case 4:
                 System.out.println("You have chosen the bus.");
+                break;
             case 5:
                 System.out.println("You have chosen the taxi.");
+                break;
             default:
-                System.out.println("ype any other number to redirect to the Admin Main Menu.");
+                System.out.println("Type any other number to redirect to the Admin Main Menu.");
                 loop = false;
         }
 
@@ -471,8 +496,7 @@ public class Main {
         System.out.println("1. Type 1 to print all the bicycle's information.");
         System.out.println("2. Type 2 to remove a bicycle.");
         System.out.println("3. Type 3 to add a new bicycle.");
-        System.out.println("4. Type 4 to update the bicycle properties.");
-        System.out.println("5. Type any other number to redirect to Vehicle Main Menu.");
+        System.out.println("4. Type any other number to redirect to Vehicle Main Menu.");
         System.out.println("-----------------------");
 
         Scanner ss = new Scanner(System.in);
@@ -529,70 +553,6 @@ public class Main {
                     bicycles.add(bicycleService.createBicycle(3));
                 System.out.println();
                 break;
-            case 4:
-
-                /**
-                 * Here the admin can update the bicycle info. Choose which bicycle should be updated and
-                 * which info specifically.
-                 */
-                
-                System.out.println("You have chosen 4: you can update the bicycle info:");
-                System.out.println("Choose which bicycle info you would like to change: ");
-                bicycleNumber = scanner.nextInt();
-                if(bicycleNumber >=1 && bicycleNumber <= bicycles.size()){
-                    Bicycle b = bicycleService.chooseBicycle(bicycleNumber);
-                    if(b != null) {
-                        System.out.println("Type one of the numbers below which indicate " +
-                                "which property you would like to change: " +
-                                "1 (wheelNumber), 2 (speed), 3 (price), 4(brand), 5(plateNumber)," +
-                                " 6(cadence) or 7(gear)?");
-                        Scanner sc = new Scanner(System.in);
-                        int value = sc.nextInt();
-
-                        switch (value) {
-                            case 1:
-                                System.out.println("Change the wheelNumber to: ");
-                                b.setWheelNumber(sc.nextInt());
-                                break;
-                            case 2:
-                                System.out.println("Change the speed to: ");
-                                b.setSpeed(sc.nextDouble());
-                                break;
-                            case 3:
-                                System.out.println("Change the price to: ");
-                                b.setPrice(sc.nextInt());
-                                break;
-                            case 4:
-                                System.out.println("Change the brand to: ");
-                                b.setBrand(sc.next());
-                                break;
-                            case 5:
-                                System.out.println("Change the plateNumber to: ");
-                                b.setPlateNumber(sc.next());
-                                break;
-                            case 6:
-                                System.out.println("Change the cadence to: ");
-                                b.setCadence(sc.nextInt());
-                                break;
-                            case 7:
-                                System.out.println("Change the gear to: ");
-                                b.setGear(sc.next());
-                                break;
-                            default:
-                                System.out.println("Wrong value typed, so you will be redirected to the Bicycle Menu." +
-                                        "\nYou can choose to update the bicycle values again and type correct values.");
-                        }
-                    }
-                }
-                else
-                /**
-                 * If the admin typed an incorrect bicycle number from the list, then they will get this message.
-                 */
-                    System.out.println("There is no bicycle with the number you provided." +
-                            "\nYou will be redirected to the Bicycle Menu. Choose to remove a bicycle again and " +
-                            "type a correct value.");
-                System.out.println();
-                break;
             default:
 
                 /**
@@ -624,8 +584,7 @@ public class Main {
         System.out.println("1. Type 1 to print all the family cars information.");
         System.out.println("2. Type 2 to remove a family car.");
         System.out.println("3. Type 3 to add a new family car.");
-        System.out.println("4. Type 4 to update the family car properties.");
-        System.out.println("5. Type any other number to redirect to Vehicle Main Menu.");
+        System.out.println("4. Type any other number to redirect to Vehicle Main Menu.");
         System.out.println("-----------------------");
 
         Scanner ss = new Scanner(System.in);
@@ -645,7 +604,7 @@ public class Main {
                 System.out.println("You have chosen 1: here is all the family car info.");
                 for (FamilyCar f:familyCars) {
                     if(f != null) {
-                        System.out.println(f);
+                        System.out.println(f.toString());
                     }
                 }
                 System.out.println();
@@ -683,88 +642,6 @@ public class Main {
                     familyCars.add(familyCarService.createFamilyCar(3));
                 System.out.println();
                 break;
-            case 4:
-
-                /**
-                 * Here the admin can update the family car info. Choose which family car should be updated and
-                 * which info specifically.
-                 */
-
-                System.out.println("You have chosen 4: you can update the family car info:");
-                System.out.println("Choose which family car info you would like to change: ");
-                familyCarNumber = scanner.nextInt();
-                if(familyCarNumber >=1 && familyCarNumber <= familyCars.size()){
-                    FamilyCar f = familyCarService.chooseFamilyCar(familyCarNumber);
-                    if(f != null) {
-                        System.out.println("Type one of the numbers below which indicate " +
-                                "which property you would like to change: " +
-                                "1 (wheelNumber), 2 (speed), 3 (price), 4(brand), 5(plateNumber)," +
-                                " 6(model), 7(color), 8(made), 9(year), 10(mileage), 11(type)?");
-                        Scanner sc = new Scanner(System.in);
-                        int value = sc.nextInt();
-
-                        switch (value) {
-                            case 1:
-                                System.out.println("Change the wheelNumber to: ");
-                                f.setWheelNumber(sc.nextInt());
-                                break;
-                            case 2:
-                                System.out.println("Change the speed to: ");
-                                f.setSpeed(sc.nextDouble());
-                                break;
-                            case 3:
-                                System.out.println("Change the price to: ");
-                                f.setPrice(sc.nextInt());
-                                break;
-                            case 4:
-                                System.out.println("Change the brand to: ");
-                                f.setBrand(sc.next());
-                                break;
-                            case 5:
-                                System.out.println("Change the plateNumber to: ");
-                                f.setPlateNumber(sc.next());
-                                break;
-                            case 6:
-                                System.out.println("Change the model to: ");
-                                f.setModel(sc.next());
-                                break;
-                            case 7:
-                                System.out.println("Change the color to: ");
-                                f.setColor(sc.next());
-                                break;
-                            case 8:
-                                System.out.println("Change the made to: ");
-                                f.setMade(sc.nextInt());
-                                break;
-                            case 9:
-                                System.out.println("Change the year to: ");
-                                f.setYear(sc.nextInt());
-                                break;
-                            case 10:
-                                System.out.println("Change the mileage to: ");
-                                f.setMileage(sc.nextInt());
-                                break;
-                            case 11:
-                                System.out.println("Change the type to: ");
-                                f.setType(sc.next().charAt(0));
-                                break;
-                            default:
-                                System.out.println("Wrong value typed, so you will be redirected to the" +
-                                        " Family Car Menu." + "\nYou can choose to update the family car values again" +
-                                        " and" + "type correct values.");
-                        }
-                    }
-                }
-                else
-
-                /**
-                 * If the admin typed an incorrect family car number from the list, then they will get this message.
-                 */
-                    System.out.println("There is no family cars with the number you provided." +
-                            "\nYou will be redirected to the Family Car Menu. Choose to remove a family car again and " +
-                            "type a correct value.");
-                System.out.println();
-                break;
             default:
 
                 /**
@@ -796,8 +673,7 @@ public class Main {
         System.out.println("1. Type 1 to print all the sports cars information.");
         System.out.println("2. Type 2 to remove a sports car.");
         System.out.println("3. Type 3 to add a new sports car.");
-        System.out.println("4. Type 4 to update the sports car properties.");
-        System.out.println("5. Type any other number to redirect to Vehicle Main Menu.");
+        System.out.println("4. Type any other number to redirect to Vehicle Main Menu.");
         System.out.println("-----------------------");
 
         Scanner ss = new Scanner(System.in);
@@ -854,83 +730,6 @@ public class Main {
                     sportsCars.add(sportsCarService.createSportsCar(3));
                 System.out.println();
                 break;
-            case 4:
-
-                /**
-                 * Here the admin can update the sports car info. Choose which sports car should be updated and
-                 * which info specifically.
-                 */
-
-                System.out.println("You have chosen 4: you can update the sports car info:");
-                System.out.println("Choose which sports car info you would like to change: ");
-                sportsCarNumber = scanner.nextInt();
-                if(sportsCarNumber >=1 && sportsCarNumber <= sportsCars.size()){
-                    SportsCar s = sportsCarService.chooseSportsCar(sportsCarNumber);
-                    if(s != null) {
-                        System.out.println("Type one of the numbers below which indicate " +
-                                "which property you would like to change: " +
-                                "1 (wheelNumber), 2 (speed), 3 (price), 4(brand), 5(plateNumber)," +
-                                " 6(model), 7(color), 8(made), 9(year), 10(mileage)?");
-                        Scanner sc = new Scanner(System.in);
-                        int value = sc.nextInt();
-
-                        switch (value) {
-                            case 1:
-                                System.out.println("Change the wheelNumber to: ");
-                                s.setWheelNumber(sc.nextInt());
-                                break;
-                            case 2:
-                                System.out.println("Change the speed to: ");
-                                s.setSpeed(sc.nextDouble());
-                                break;
-                            case 3:
-                                System.out.println("Change the price to: ");
-                                s.setPrice(sc.nextInt());
-                                break;
-                            case 4:
-                                System.out.println("Change the brand to: ");
-                                s.setBrand(sc.next());
-                                break;
-                            case 5:
-                                System.out.println("Change the plateNumber to: ");
-                                s.setPlateNumber(sc.next());
-                                break;
-                            case 6:
-                                System.out.println("Change the model to: ");
-                                s.setModel(sc.next());
-                                break;
-                            case 7:
-                                System.out.println("Change the color to: ");
-                                s.setColor(sc.next());
-                                break;
-                            case 8:
-                                System.out.println("Change the made to: ");
-                                s.setMade(sc.nextInt());
-                                break;
-                            case 9:
-                                System.out.println("Change the year to: ");
-                                s.setYear(sc.nextInt());
-                                break;
-                            case 10:
-                                System.out.println("Change the mileage to: ");
-                                s.setMileage(sc.nextInt());
-                                break;
-                            default:
-                                System.out.println("Wrong value typed, so you will be redirected to the" +
-                                        " Sports Car Menu." + "\nYou can choose to update the sports car values again" +
-                                        " and type correct values.");
-                        }
-                    }
-                }
-                else
-                /**
-                 * If the admin typed an incorrect sports car number from the list, then they will get this message.
-                 */
-                    System.out.println("There is no sports cars with the number you provided." +
-                            "\nYou will be redirected to the Sports Car Menu. Choose to remove a sports car again and " +
-                            "type a correct value.");
-                System.out.println();
-                break;
             default:
 
                 /**
@@ -962,8 +761,7 @@ public class Main {
         System.out.println("1. Type 1 to print all the bus information.");
         System.out.println("2. Type 2 to remove a bus.");
         System.out.println("3. Type 3 to add a new bus.");
-        System.out.println("4. Type 4 to update the bus properties.");
-        System.out.println("5. Type any other number to redirect to Vehicle Main Menu.");
+        System.out.println("4. Type any other number to redirect to Vehicle Main Menu.");
         System.out.println("-----------------------");
 
         Scanner ss = new Scanner(System.in);
@@ -1022,75 +820,6 @@ public class Main {
                     bus.add(busService.createBus(3));
                 System.out.println();
                 break;
-            case 4:
-
-                /**
-                 * Here the admin can update the bus info. Choose which bus should be updated and
-                 * which info specifically.
-                 */
-
-                System.out.println("You have chosen 4: you can update the bus info:");
-                System.out.println("Choose which bus info you would like to change: ");
-                busNumber = scanner.nextInt();
-                if(busNumber >=1 && busNumber <= bus.size()){
-                    Bus b = busService.chooseBus(busNumber);
-                    if(b != null) {
-                        System.out.println("Type one of the numbers below which indicate " +
-                                "which property you would like to change: " +
-                                "1 (wheelNumber), 2 (speed), 3 (price), 4(brand), 5(plateNumber)," +
-                                " 6(isWorking), 7(route), 8(routeTime)?");
-                        Scanner sc = new Scanner(System.in);
-                        int value = sc.nextInt();
-
-                        switch (value) {
-                            case 1:
-                                System.out.println("Change the wheelNumber to: ");
-                                b.setWheelNumber(sc.nextInt());
-                                break;
-                            case 2:
-                                System.out.println("Change the speed to: ");
-                                b.setSpeed(sc.nextDouble());
-                                break;
-                            case 3:
-                                System.out.println("Change the price to: ");
-                                b.setPrice(sc.nextInt());
-                                break;
-                            case 4:
-                                System.out.println("Change the brand to: ");
-                                b.setBrand(sc.next());
-                                break;
-                            case 5:
-                                System.out.println("Change the plateNumber to: ");
-                                b.setPlateNumber(sc.next());
-                                break;
-                            case 6:
-                                System.out.println("Change the isWorking status to: ");
-                                b.setWorking(sc.nextBoolean());
-                                break;
-                            case 7:
-                                System.out.println("Change the route to: ");
-                                b.setRoute(sc.next());
-                                break;
-                            case 8:
-                                System.out.println("Change the routeTime to: ");
-                                b.setRouteTime(sc.nextDouble());
-                                break;
-                            default:
-                                System.out.println("Wrong value typed, so you will be redirected to the" +
-                                        " Bus Menu." + "\nYou can choose to update the bus values again" +
-                                        " and type correct values.");
-                        }
-                    }
-                }
-                else
-                /**
-                 * If the admin typed an incorrect bus number from the list, then they will get this message.
-                 */
-                    System.out.println("There is no bus with the number you provided." +
-                            "\nYou will be redirected to the Bus Menu. Choose to remove a bus again and " +
-                            "type a correct value.");
-                System.out.println();
-                break;
             default:
 
                 /**
@@ -1122,8 +851,7 @@ public class Main {
         System.out.println("1. Type 1 to print all the taxi information.");
         System.out.println("2. Type 2 to remove a taxi.");
         System.out.println("3. Type 3 to add a new taxi.");
-        System.out.println("4. Type 4 to update the taxi properties.");
-        System.out.println("5. Type any other number to redirect to Vehicle Main Menu.");
+        System.out.println("4. Type any other number to redirect to Vehicle Main Menu.");
         System.out.println("-----------------------");
 
         Scanner ss = new Scanner(System.in);
@@ -1179,95 +907,6 @@ public class Main {
                     taxi.add(taxiService.createTaxi(0));
                 else
                     taxi.add(taxiService.createTaxi(3));
-                System.out.println();
-                break;
-            case 4:
-
-                /**
-                 * Here the admin can update the taxi info. Choose which taxi should be updated and
-                 * which info specifically.
-                 */
-                System.out.println("You have chosen 4: you can update the taxi info:");
-                System.out.println("Choose which taxi info you would like to change: ");
-                taxiNumber = scanner.nextInt();
-                if(taxiNumber >=1 && taxiNumber <= taxi.size()){
-                    Taxi t = taxiService.chooseTaxi(taxiNumber);
-                    if(t != null) {
-                        System.out.println("Type one of the numbers below which indicate " +
-                                "which property you would like to change: " +
-                                "1 (wheelNumber), 2 (speed), 3 (price), 4(brand), 5(plateNumber)," +
-                                " 6(model), 7(color), 8(made), 9(year), 10(mileage), 11(driverName), 12(rating) or " +
-                                "13(isAvailable)?");
-                        Scanner sc = new Scanner(System.in);
-                        int value = sc.nextInt();
-
-                        switch (value) {
-                            case 1:
-                                System.out.println("Change the wheelNumber to: ");
-                                t.setWheelNumber(sc.nextInt());
-                                break;
-                            case 2:
-                                System.out.println("Change the speed to: ");
-                                t.setSpeed(sc.nextDouble());
-                                break;
-                            case 3:
-                                System.out.println("Change the price to: ");
-                                t.setPrice(sc.nextInt());
-                                break;
-                            case 4:
-                                System.out.println("Change the brand to: ");
-                                t.setBrand(sc.next());
-                                break;
-                            case 5:
-                                System.out.println("Change the plateNumber to: ");
-                                t.setPlateNumber(sc.next());
-                                break;
-                            case 6:
-                                System.out.println("Change the model to: ");
-                                t.setModel(sc.next());
-                                break;
-                            case 7:
-                                System.out.println("Change the color to: ");
-                                t.setColor(sc.next());
-                                break;
-                            case 8:
-                                System.out.println("Change the made to: ");
-                                t.setMade(sc.nextInt());
-                                break;
-                            case 9:
-                                System.out.println("Change the year to: ");
-                                t.setYear(sc.nextInt());
-                                break;
-                            case 10:
-                                System.out.println("Change the mileage to: ");
-                                t.setMileage(sc.nextInt());
-                                break;
-                            case 11:
-                                System.out.println("Change the driver name to: ");
-                                t.setDriverName(sc.next());
-                                break;
-                            case 12:
-                                System.out.println("Change the rating to: ");
-                                t.setRating(sc.nextByte());
-                                break;
-                            case 13:
-                                System.out.println("Change the isAvailable status to: ");
-                                t.setAvailable(sc.nextBoolean());
-                                break;
-                            default:
-                                System.out.println("Wrong value typed, so you will be redirected to the" +
-                                        " Taxi Menu." + "\nYou can choose to update the taxi values again" +
-                                        " and type correct values.");
-                        }
-                    }
-                }
-                else
-                /**
-                 * If the admin typed an incorrect taxi number from the list, then they will get this message.
-                 */
-                    System.out.println("There is no taxi with the number you provided." +
-                            "\nYou will be redirected to the Taxi Menu. Choose to remove a taxi again and " +
-                            "type a correct value.");
                 System.out.println();
                 break;
             default:
@@ -1802,7 +1441,7 @@ public class Main {
      * @param taxi
      * @return
      */
-    private static boolean taxiMenuOptions(List<Taxi> taxi){
+    private static boolean taxiMenuOptions(List<Taxi> taxi) {
 
         boolean loop3 = true;
         TaxiService taxiService = new TaxiService();
@@ -1827,7 +1466,7 @@ public class Main {
 
                 System.out.println("You have chosen 1: all the bus info.");
                 for (Taxi t : taxi) {
-                    if(t != null) {
+                    if (t != null) {
                         t.printInfo();
                         System.out.println("-----------------------");
                     }
@@ -1860,54 +1499,4 @@ public class Main {
         }
         return loop3;
     }
-
-      /*
-        Vehicle vehicle = new Vehicle(2, 50, 1000, "Arch", "11GH1231") {
-            @Override
-            public void horn() {
-                System.out.println("The horn is a honk");
-            }
-        };
-
-        System.out.println(vehicle);
-
-        Bicycle bicycle2 = new Bicycle(2, 50, 1000, "Arch", "11GH1231", 100,
-        "high");
-        System.out.println(bicycle2);
-
-         */
-
-             /*
-
-        System.out.println("Now, let's check if the files for bicycle, personal car, bus and taxi exist.\n" +
-                "If they don't exist, we will write ourselves.\n");
-
-
-        if(bicycles.length == 0 || personalCars.length == 0 || bus.length == 0 ||
-                taxi.length == 0){
-            System.out.println("Something is missing in the bicycle, personal car, bus or taxi info.\nPlease provide all " +
-                    "the info and run the program again.");
-            System.exit(0);
-        }
-
-        System.out.println("\nLet's firstly check what the taxi horn sounds like.");
-        //Polymorphism
-        PublicCar pObj = new Taxi();
-        //pObj.horn();
-        pObj = new Bus();
-        //pObj.horn();
-
-        function(pObj);
-        function(new Taxi());
-
-    }
-
-    private static void function(PublicCar p){
-        if(p instanceof Taxi){
-            Taxi tObj = (Taxi) p;
-
-            tObj.horn();
-        }
-
-         */
 }

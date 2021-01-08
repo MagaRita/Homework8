@@ -201,8 +201,7 @@ public class BusService {
         List<Bus> bus = null;
 
         if (createFile(busFileName)) {
-            System.out.println("There are no buses available at the moment." +
-                    "\nPlease choose one of the other options or return to the Main Menu.");
+            System.out.println("There are no buses available at the moment.");
             return null;
         } else {
             try {
@@ -296,6 +295,7 @@ public class BusService {
         for(Bus b:bus){
             if(b != null && b.isWorking() && b.getRoute().equals("Komitas")){
                 b.printInfo();
+                System.out.println("***********");
                 count++;
             }
         }

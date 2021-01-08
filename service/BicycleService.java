@@ -142,7 +142,6 @@ public class BicycleService {
     /**
      * If there is no bicycle.txt file, then the user gets the message that there are no bicycles available.
      * Otherwise, the info from the file is read and bicycles are created with that info.
-     *
      * @return
      */
     public List<Bicycle> fillBicycleInfo() {
@@ -151,8 +150,7 @@ public class BicycleService {
         List<Bicycle> bicycles = null;
 
         if (createFile(bicycleFileName)) {
-            System.out.println("There are no bicycle's available at the moment." +
-                    "\nPlease choose one of the other options or return to the Main Menu.");
+            System.out.println("There are no bicycle's available at the moment.");
             return null;
         } else {
             try {
