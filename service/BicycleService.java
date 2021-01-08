@@ -290,24 +290,7 @@ public class BicycleService {
      */
 
     public Bicycle maxCadence(List<Bicycle> bicycles) {
-      /*
-        if(bicycles.get(0) == null) {
-            return null;
-        }
-        Bicycle max = bicycles.get(0);
-        for(int i = 1; i < bicycles.size(); i++){
-            Bicycle b = bicycles.get(i);
-            if(b != null && max.getCadence() <= b.getCadence()){
-                max = b;
-            }
-        }
-        return max;
-       */
-        //   try{
         return Collections.max(bicycles);
-        //    } catch (NullPointerException e){
-        //       return ;
-        //    }
     }
 
     /**
@@ -316,28 +299,6 @@ public class BicycleService {
      */
 
     public void orderByPriceAsc(List<Bicycle> bicycles) {
-
         Collections.sort(bicycles, new PriceComparator());
-
-        /*
-
-        Bicycle temp;
-        for (int i = 0; i < bicycles.size(); i++){
-            for (int j = 1; j < (bicycles.size() - i); j++) {
-                Bicycle b1 = bicycles.get(j - 1), b2 = bicycles.get(j);
-                if (b1.getPrice() > b2.getPrice()) {
-                    temp = b1;
-                    b1 = b2;
-                    b2 = temp;
-                }
-            }
-        }
-
-        for (Bicycle b:bicycles){
-            System.out.println("*********");
-            b.printInfo();
-        }
-
-         */
     }
 }

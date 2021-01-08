@@ -1,6 +1,5 @@
 package service;
 
-import model.Bicycle;
 import model.Taxi;
 
 import java.io.File;
@@ -317,64 +316,4 @@ public class TaxiService {
         System.out.println("No taxi's found.");
         return false;
     }
-
-
-    /*
-    public Taxi[] writeOrReadInfoInTaxiObject(){
-
-        String taxiFileName = "taxi.txt";
-        Taxi[] taxis;
-
-        if(createFile(taxiFileName)) {
-
-            System.out.println("-----------------------");
-            System.out.print("Type how many taxi's should be created: ");
-            Scanner s = new Scanner(System.in);
-            int count = s.nextInt();
-            System.out.println("We will create " + count + " different taxi's.");
-            System.out.println("Let's enter the information for each of them: ");
-            taxis = new Taxi[count];
-
-            for (int i = 0; i < count; i++) {
-                taxis[i] = createTaxi(i);
-            }
-            System.out.println();
-        } else {
-            String path = "C:\\Users\\ACER\\IdeaProjects\\Homework8\\src\\taxi.txt";
-            List<String> read = null;
-            try {
-                read = FileService.read(path);
-            } catch (Exception e) {
-                System.out.println("An error occurred.");
-                e.printStackTrace();
-            }
-
-        //    String str = Arrays.toString(read).substring(1, Arrays.toString(read).length()-1);
-            taxis = new Taxi[read.size()];
-            fillTaxi(taxis,read);
-
-            System.out.println("-----------------------");
-        }
-        return taxis;
-    }
-
-
-    private void fillTaxi(Taxi[] taxis, List<String> row){
-
-        int defaultTaxiMembers = 13;
-        int index = 0;
-        for(int i=0;i<row.size();i++){
-            String[] member = row.get(i).split(",");
-            if(member.length == defaultTaxiMembers){
-                taxis[index++] = new Taxi(Integer.parseInt(member[0]),Double.parseDouble(member[1]),
-                        Integer.parseInt(member[2]), member[3], member[4], member[5],  member[6],
-                        Integer.parseInt(member[7]), Integer.parseInt(member[8]), Integer.parseInt(member[9]),
-                        member[10], Byte.parseByte(member[11]), Boolean.parseBoolean(member[12]));
-            } else {
-                System.out.println("Row " + i + " does not have all the taxi information.");
-            }
-        }
-    }
-
-     */
 }
