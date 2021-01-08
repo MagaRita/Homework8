@@ -12,7 +12,7 @@ public class User {
      */
 
     private static final String ADMIN_USERNAME = "nelliAn111AAA";
-    private static final String ADMIN_PASSWORD = "123456aA!!!!AAA";
+    private static final String ADMIN_PASSWORD = "123456789A!A!";
 
     private static int userNumbers = 1;
 
