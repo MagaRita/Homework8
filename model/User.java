@@ -25,8 +25,8 @@ public class User {
         String[] s = data.split(",");
         this.fullName = s[0];
         this.username = s[1];
-        this.password = s[2];
-        this.email = s[3];
+        this.email = s[2];
+        this.password = s[3];
     }
 
     public String getFullName() {
